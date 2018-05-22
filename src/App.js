@@ -1,10 +1,8 @@
-import React, { Component } from 'react';
+/*import React, { Component } from 'react';
 import './App.css';
 import { Container, Row, Col } from "reactstrap";
 import Gmap from './component/Gmap';
 import SatelliteSummary from './component/SatelliteSummary';
-import Menubar from "./component/Menubar";
-import Taskbar from "./component/Taskbar";
 
 const satelliteData = [
   {
@@ -32,11 +30,14 @@ class App extends Component {
       content = <div>it is not main</div>
     }
     return (
-        <Container fluid={true}>
+        <Container fluid={true} style={{width:'100%',height:'100%',color:'black'}}>
+          <Container style={{width:'50%',height:'150%',color:'red'}}>
+          </Container>
+            {
           <Row>
-            <Col className="Taskbar" lg={2}><Taskbar/></Col>
+            <Col className="Taskbar" lg={2}></Col>
             <Col className="MainArea" lg={10}>
-              <Row className="Menubar"> <Menubar/> </Row>
+              <Row className="Menubar"></Row>
               <Row className="Map">
                 <Col><Gmap/></Col>
               </Row>
@@ -44,10 +45,11 @@ class App extends Component {
                 {content}
               </Row>
             </Col>
-          </Row>
+          </Row>}
         </Container>
     );
   }
 }
 
 export default App;
+*/

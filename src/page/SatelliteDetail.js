@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+/*import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 export default class OverlaySatellite extends Component {
@@ -17,5 +17,17 @@ export default class OverlaySatellite extends Component {
         lat: 0,
         lng : 0,
         alt : 0
+    }
+}*/
+import React, {Component} from 'react';
+import {PageTemplate} from "../ui/PageTemplate";
+
+export class SatelliteDetail extends Component {
+    render(){
+        return(
+            <PageTemplate>
+                <div> this is a detail </div>
+            </PageTemplate>
+        );
     }
 }

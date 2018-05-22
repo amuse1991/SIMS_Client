@@ -1,9 +1,36 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+//import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import 'bootstrap/dist/css/bootstrap.css';
 
+import {
+    HashRouter,
+    Route
+} from 'react-router-dom';
+
+import {Dashboard} from './page/Dashboard';
+import {SatelliteDetail} from './page/SatelliteDetail';
+import {Help} from './page/Help';
+import {CAST} from './page/CAST';
+
+window.React = React;
+
+/*
 ReactDOM.render(<App />, document.getElementById('root'));
 registerServiceWorker();
+*/
+
+ReactDOM.render(
+    <HashRouter>
+        <div className="main">
+            <Route exact path = "/" component={Dashboard}/>
+            <Route path = "/detail" component={SatelliteDetail}/>
+            <Route path = "/help" component={Help}/>
+            <Route path = "/cast" component={CAST}/>
+        </div>
+    </HashRouter>,document.getElementById('root')
+)
+registerServiceWorker();
+
