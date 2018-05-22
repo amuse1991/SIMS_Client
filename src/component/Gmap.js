@@ -1,6 +1,7 @@
 import React from "react"
 import { compose, withProps } from "recompose"
-import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
+import { withScriptjs, withGoogleMap, GoogleMap, OverlayView } from "react-google-maps"
+import OverlaySatellite from "./OverlaySatellite"
 
 const GmapComponent = compose(
   withProps({
@@ -17,9 +18,22 @@ const GmapComponent = compose(
     defaultZoom={8}
     defaultCenter={{ lat: -34.397, lng: 150.644 }}
   >
-    {props.isMarkerShown && <Marker position={{ lat: -34.397, lng: 150.644 }} onClick={props.onMarkerClick} />}
+    {/*props.isMarkerShown && <Marker position={{ lat: -34.397, lng: 150.644 }} onClick={props.onMarkerClick} >*/}
+    <OverlayView 
+        position={{ lat: -34.397, lng: 150.644 }}
+        mapPaneName={OverlayView.OVERLAY_LAYER}
+        getPixelPositionOffset={getPixelPositionOffset}
+      >
+        <OverlaySatellite imgSrc="http://pds.joins.com/news/component/newsis/201406/16/NISI20140616_0009799793_web.jpg"/>
+      </OverlayView>
   </GoogleMap>
+  
 )
+
+const getPixelPositionOffset = (width, height) => ({
+  x: -(width / 2),
+  y: -(height / 2),
+})
 
 class Gmap extends React.PureComponent {
   state = {
@@ -40,6 +54,7 @@ class Gmap extends React.PureComponent {
     this.setState({ isMarkerShown: false })
     this.delayedShowMarker()
   }
+  
 
   render() {
     return (
