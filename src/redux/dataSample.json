@@ -1,0 +1,22 @@
+{
+    "satellites" : [
+        {
+            "id":"",
+            "name": "",
+            "imgSrc": "",
+            "lat": "",
+            "lng" : "",
+            "alt" : ""
+        }
+    ],
+    "tasks" : [
+        {
+            "id":"",
+            "index":"",
+            "satelliteId":"",
+            "satelliteName":"",
+            "isActivated":true
+        }
+    ],  
+    "activatedTask": ""
+}
