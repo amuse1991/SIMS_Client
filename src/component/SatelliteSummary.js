@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Card, CardImg, CardText, CardBody,
     CardTitle, Button } from 'reactstrap';
-import Taskbar from "../ui/Taskbar";
+//import Taskbar from "../ui/Taskbar";
+import TaskStore from "../mobx/stores/TaskStore";
+
   
 class SatelliteSummary extends Component{
     
@@ -21,8 +23,10 @@ class SatelliteSummary extends Component{
     }
 
     onViewDetailBtnClicked = ()=>{
-        const {satName} = this.props;
-        
+        //const {satName} = this.props;
+        let taskStore = new TaskStore();
+        taskStore.addTask('01');//test code
+        console.log(taskStore._tasks.pop());
     }
 
     render(){
