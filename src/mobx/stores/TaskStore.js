@@ -12,8 +12,8 @@ class TaskStore {
     }
 
     @action
-    activateTask(taskId){
-        this.activeTask = taskId;
+    activateTask(task){
+        this.activeTask = task;
     }
 
     @action

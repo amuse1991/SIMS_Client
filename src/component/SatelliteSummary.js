@@ -5,6 +5,7 @@ import { Card, CardImg, CardText, CardBody,
 //import Taskbar from "../ui/Taskbar";
 import {taskStore} from "../mobx/stores/TaskStore";
 import TaskModel from '../model/TaskModel';
+import { NavLink } from 'react-router-dom'
 
   
 class SatelliteSummary extends Component{
@@ -26,7 +27,7 @@ class SatelliteSummary extends Component{
     onViewDetailBtnClicked = ()=>{
         let newTask = new TaskModel('01','testSat','true'); //test code
         taskStore.addTask(newTask);
-        
+        taskStore.activateTask(newTask);
     }
 
     render(){
@@ -38,7 +39,7 @@ class SatelliteSummary extends Component{
                         <CardTitle>{satName}</CardTitle>
                         <CardText>launch date : {launchDate}</CardText>
                         <CardText>days of operation : {daysOfOperation}</CardText>
-                        <Button onClick={this.onViewDetailBtnClicked}>view detail</Button>
+                        <NavLink to={'/detail/'+satName}><Button onClick={this.onViewDetailBtnClicked}>view detail</Button></NavLink>
                     </CardBody>
                 </Card>
         );

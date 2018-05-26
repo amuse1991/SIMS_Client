@@ -1,32 +1,14 @@
-/*import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-
-export default class OverlaySatellite extends Component {
-
-    static propTypes = {
-        satName: PropTypes.string,
-        imgSrc: PropTypes.string,
-        lat: PropTypes.number,
-        lng : PropTypes.number,
-        alt : PropTypes.number
-    }
-
-    static defaultProps = {
-        satName: "No name",
-        imgSrc: "",
-        lat: 0,
-        lng : 0,
-        alt : 0
-    }
-}*/
 import React, {Component} from 'react';
 import {PageTemplate} from "../ui/PageTemplate";
+//import { Detail } from "../component/Detail";
 
 export class SatelliteDetail extends Component {
     render(){
+        const {match} = this.props
         return(
             <PageTemplate>
-                <div> this is a detail </div>
+                <div> {match.params.satelliteId} </div>
+                {/*<Detail/>*/} 
             </PageTemplate>
         );
     }

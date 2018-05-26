@@ -26,7 +26,7 @@ ReactDOM.render(
     <HashRouter>
         <div className="main">
             <Route exact path = "/" component={Dashboard}/>
-            <Route path = "/detail" component={SatelliteDetail}/>
+            <Route path = "/detail/:satelliteId" component={SatelliteDetail}/>
             <Route path = "/help" component={Help}/>
             <Route path = "/cast" component={CAST}/>
         </div>
