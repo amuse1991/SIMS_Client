@@ -1,4 +1,4 @@
-class Satellite {
+class SatelliteModel {
     id;
     name;
     imgSrc;

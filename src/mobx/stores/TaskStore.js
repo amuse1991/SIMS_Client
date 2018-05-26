@@ -1,30 +1,30 @@
 import { observable, action } from "mobx";
-import Task from '../../classes/Task';
 
-export default class TaskStore {
+class TaskStore {
     @observable
-    _activeTaskId;
-    @observable
-    _tasks;
+    activeTask; // : Task
+    @observable 
+    tasks; // : Array<Task>
 
     constructor(){
-        this._activeTaskId = null;
-        this._tasks = [];
-    }
-
-    getActivateTaskId(){
-        return this._activeTaskId;
+        this.activeTask = null;
+        this.tasks = [];
     }
 
     @action
-    setActivateTaskId(taskId){
-        this._activeTaskId = taskId
+    activateTask(taskId){
+        this.activeTask = taskId;
     }
 
     @action
-    addTask(satelliteId){
-        //TODO : satelliteID로 위성 이름 정보 가져오기
-        //TODO : task 객체 생성하기
-        this._tasks.push(new Task('01',true));
+    deactivateTask(taskId){
+        //TODO : deactivate task
+    }
+
+    @action
+    addTask(task){
+        this.tasks.push(task);
     }
 }
+
+export const taskStore = new TaskStore();
