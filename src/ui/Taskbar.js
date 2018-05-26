@@ -1,30 +1,15 @@
-import React, { Component } from 'react';
-import { Nav, NavItem, NavLink } from 'reactstrap';
+import React, {Component} from 'react';
+import { TaskbarItem } from "../component/TaskbarItem"
+import { taskStore } from "../mobx/stores/TaskStore"
+import { UserProfile } from '../component/UserProfile'
 
+//lass TSComponent extends React.Component<Props, State>
 export default class Taskbar extends Component {
-  render() {
+  render(){
     return (
       <div>
-        <p>List Based</p>
-        <Nav vertical>
-          <NavItem>
-            <NavLink href="#">Link</NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink href="#">Link</NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink href="#">Another Link</NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink disabled href="#">Disabled Link</NavLink>
-          </NavItem>
-        </Nav>
-        <hr />
-        <p>Link based</p>
-        <Nav vertical>
-          <NavLink href="#">Link</NavLink> <NavLink href="#">Link</NavLink> <NavLink href="#">Another Link</NavLink> <NavLink disabled href="#">Disabled Link</NavLink>
-        </Nav>
+        <UserProfile/>
+        <TaskbarItem store={taskStore}/>
       </div>
     );
   }

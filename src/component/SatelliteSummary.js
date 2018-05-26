@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Card, CardImg, CardText, CardBody,
     CardTitle, Button } from 'reactstrap';
+//import Taskbar from "../ui/Taskbar";
+import {taskStore} from "../mobx/stores/TaskStore";
+import TaskModel from '../model/TaskModel';
+import { NavLink } from 'react-router-dom'
+
   
-
-
-
 class SatelliteSummary extends Component{
     
     static propTypes = {
@@ -21,27 +23,26 @@ class SatelliteSummary extends Component{
         launchDate: "No data",
         daysOfOperation : "No data"
     }
-    /*
-    constructor(props){
-        super(props);
+
+    onViewDetailBtnClicked = ()=>{
+        let newTask = new TaskModel('01','testSat','true'); //test code
+        taskStore.addTask(newTask);
+        taskStore.activateTask(newTask);
     }
-    */
+
     render(){
         const {satName, imgSrc, launchDate, daysOfOperation} = this.props;
         return (
-            <div>
                 <Card>
-                    <CardImg width='50%' height='200px' src={imgSrc} alt={satName} />
-                    <CardBody>
-                    <CardTitle>{satName}</CardTitle>
-                    <CardText>launch date : {launchDate}</CardText>
-                    <CardText>days of operation : {daysOfOperation}</CardText>
-                    <Button>view detail</Button>
+                    <CardImg top width='100%' height="100%" src={imgSrc} alt={satName} />
+                    <CardBody className="text-center">
+                        <CardTitle>{satName}</CardTitle>
+                        <CardText>launch date : {launchDate}</CardText>
+                        <CardText>days of operation : {daysOfOperation}</CardText>
+                        <NavLink to={'/detail/'+satName}><Button onClick={this.onViewDetailBtnClicked}>view detail</Button></NavLink>
                     </CardBody>
                 </Card>
-            </div>
         );
-        
     }
 }
 

@@ -6,12 +6,12 @@ import {
     NavbarBrand,
     Nav,
     NavItem,
-    //NavLink,
+    NavLink,
     UncontrolledDropdown,
     DropdownToggle,
     DropdownMenu,
     DropdownItem } from 'reactstrap';
-import { NavLink } from 'react-router-dom';
+import { Link }  from 'react-router-dom';
     
 export default class Menubar extends Component {
     
@@ -36,13 +36,13 @@ export default class Menubar extends Component {
                 <Collapse isOpen={this.state.isOpen} navbar>
                   <Nav className="ml-auto" navbar>
                     <NavItem>
-                      <NavLink to="/">DashBoard</NavLink>
+                      <Link to="/"><NavLink>DashBoard</NavLink></Link>
                     </NavItem>
                     <NavItem>
-                      <NavLink to="/cast">CAST</NavLink>
+                      <Link to="/cast"><NavLink>CAST</NavLink></Link>
                     </NavItem>
                     <NavItem>
-                      <NavLink to="/help">HELP</NavLink>
+                      <Link to="/help"><NavLink>HELP</NavLink></Link>
                     </NavItem>
                     <UncontrolledDropdown nav inNavbar>
                       <DropdownToggle nav caret>

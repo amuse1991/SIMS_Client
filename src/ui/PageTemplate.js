@@ -13,23 +13,10 @@ export class PageTemplate extends Component {
                     <Col className = "Menubar"> <Menubar/> </Col>
                 </Row>
                 <Row>
-                    <Col className = "Taskbar"> <Taskbar/> </Col>
+                    <Col-2 className = "Taskbar"> <Taskbar/> </Col-2>
                     <Col className = "pageArea"> {children} </Col>
                 </Row>
             </Container>
         );
     }
 }
-/*
-export const PageTemplate = ({children}) => {
-    <Container fluid={true}>
-    <Row>
-        <Col className = "Menubar"> <Menubar/> </Col>
-    </Row>
-    <Row>
-        <Col className = "Taskbar"> <Taskbar/> </Col>
-        <Col className = "pageArea"> {children} </Col>
-    </Row>
-    </Container>
-}
-*/
