@@ -36,9 +36,6 @@ export default class Menubar extends Component {
                 <Collapse isOpen={this.state.isOpen} navbar>
                   <Nav className="ml-auto" navbar>
                     <NavItem>
-                      <Link to="/"><NavLink>DashBoard</NavLink></Link>
-                    </NavItem>
-                    <NavItem>
                       <Link to="/cast"><NavLink>CAST</NavLink></Link>
                     </NavItem>
                     <NavItem>

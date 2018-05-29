@@ -14,7 +14,7 @@ export class TaskItem extends Component{
     render(){
         const {taskName} = this.props;
         return(
-            <ButtonGroup>
+            <ButtonGroup  className='mw-100'>
                 <Button>{taskName}</Button>
                 <Button>X</Button>
             </ButtonGroup>

@@ -10,6 +10,7 @@ import {
     Route
 } from 'react-router-dom';
 
+import {Login} from './page/Login';
 import {Dashboard} from './page/Dashboard';
 import {SatelliteDetail} from './page/SatelliteDetail';
 import {Help} from './page/Help';
@@ -25,7 +26,8 @@ registerServiceWorker();
 ReactDOM.render(
     <HashRouter>
         <div className="main">
-            <Route exact path = "/" component={Dashboard}/>
+            <Route exact path = "/" component={Login}/>
+            <Route path = "/dashboard" component={Dashboard}/>
             <Route path = "/detail/:satelliteId" component={SatelliteDetail}/>
             <Route path = "/help" component={Help}/>
             <Route path = "/cast" component={CAST}/>
