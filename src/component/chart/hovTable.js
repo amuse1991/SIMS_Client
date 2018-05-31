@@ -8,29 +8,29 @@ export default class HovTable extends React.Component {
         <thead>
           <tr>
             <th>#</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Username</th>
+            <th>Time</th>
+            <th>Type</th>
+            <th>Data</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
+            <td>2018-05-01 15:00:01</td>
+            <td>TD-01</td>
+            <td>-2.395745</td>
           </tr>
           <tr>
             <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
+            <td>2018-05-01 15:00:02</td>
+            <td>TD-01</td>
+            <td>-2.895745</td>
           </tr>
           <tr>
             <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
+            <td>2018-05-01 15:00:03</td>
+            <td>TD-02</td>
+            <td>-3.128569</td>
           </tr>
         </tbody>
       </Table>

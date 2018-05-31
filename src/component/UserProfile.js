@@ -9,7 +9,7 @@ export class UserProfile extends Component{
             <CardTitle className="text-center">User Name</CardTitle>
             <CardSubtitle className="text-center">Division/Team</CardSubtitle>
             <CardText className="text-center">User Information</CardText>
-            <NavLink to="/"> <Button className="btn-block">Dashboard</Button> </NavLink>
+            <NavLink to="/dashboard"> <Button className="btn-block">Dashboard</Button> </NavLink>
             {/*<Button className="btn-block">Logout</Button>*/}
         </Card>
         );

@@ -36,9 +36,6 @@ export default class Menubar extends Component {
                 <Collapse isOpen={this.state.isOpen} navbar>
                   <Nav className="ml-auto" navbar>
                     <NavItem>
-                      <Link to="/cast"><NavLink>CAST</NavLink></Link>
-                    </NavItem>
-                    <NavItem>
                       <Link to="/help"><NavLink>HELP</NavLink></Link>
                     </NavItem>
                     <UncontrolledDropdown nav inNavbar>
@@ -47,14 +44,14 @@ export default class Menubar extends Component {
                       </DropdownToggle>
                       <DropdownMenu right>
                         <DropdownItem>
-                          Option 1
+                          Edit Profile
                         </DropdownItem>
                         <DropdownItem>
-                          Option 2
+                          Settings
                         </DropdownItem>
                         <DropdownItem divider />
                         <DropdownItem>
-                          Reset
+                          <Link to="/">Logout</Link>
                         </DropdownItem>
                       </DropdownMenu>
                     </UncontrolledDropdown>
