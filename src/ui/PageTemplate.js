@@ -8,7 +8,7 @@ export class PageTemplate extends Component {
     render(){
         const {children} = this.props;
         return(
-            <Container fluid={true}>
+            <Container>
                 <Row>
                     <Col className = "Menubar"> <Menubar/> </Col>
                 </Row>

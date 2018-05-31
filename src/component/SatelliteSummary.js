@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Card, CardImg, CardText, CardBody,
-    CardTitle, Button } from 'reactstrap';
+    CardTitle, Button} from 'reactstrap';
 //import Taskbar from "../ui/Taskbar";
 import {taskStore} from "../mobx/stores/TaskStore";
 import TaskModel from '../model/TaskModel';
@@ -33,8 +33,8 @@ class SatelliteSummary extends Component{
     render(){
         const {satName, imgSrc, launchDate, daysOfOperation} = this.props;
         return (
-                <Card>
-                    <CardImg top width='100%' height="100%" src={imgSrc} alt={satName} />
+                <Card className='h-100'>
+                    <CardImg top width='50%' height="50%" src={imgSrc} alt={satName} />
                     <CardBody className="text-center">
                         <CardTitle>{satName}</CardTitle>
                         <CardText>launch date : {launchDate}</CardText>

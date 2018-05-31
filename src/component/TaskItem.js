@@ -12,10 +12,11 @@ export class TaskItem extends Component{
     }
 
     render(){
-        const {taskName} = this.props;
+        //const {taskName} = this.props;
         return(
-            <ButtonGroup>
-                <Button>{taskName}</Button>
+            <ButtonGroup  className='w-100'>
+                {/* <Button>{taskName}</Button> */}
+                <Button>Test Satellite 01</Button>
                 <Button>X</Button>
             </ButtonGroup>
         );
