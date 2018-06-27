@@ -26,7 +26,7 @@ export class RTD extends Component {
     
     render(){
         socket.on('response_telemetry',function(msg){
-            alert(msg);
+            console.log(msg);
          });
         // let socket = io(this.state.endpoint);
         // socket.on('response_telemetry',(msg)=>{
