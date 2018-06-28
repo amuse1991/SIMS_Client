@@ -2,10 +2,18 @@ import React,{Component} from "react";
 import HovTable from "../chart/hovTable";
 import {Button} from 'reactstrap';
 import io from 'socket.io-client';
+import {WOD} from "../realtime_data/WOD";
 
 var socket = io('http://localhost:3001');
 
 export class RTD extends Component {
+
+    constructor(props){
+        super(props);
+        this.state = {
+            wod : "none"
+        }
+    }
 
     wsConnect = ()=>{
          console.log('wsConnect called');
@@ -19,30 +27,25 @@ export class RTD extends Component {
         socket.disconnect();
     }
 
-    // componentDidMount(){
-    //     let socket = io(this.state.endpoint);
-    //     socket.emit('request_telemetry','satelliteName');
-    // }
-    
+    changeWOD = (wodData)=>{
+        this.setState({wod:wodData});
+    }
+
     render(){
-        socket.on('response_telemetry',function(msg){
-            console.log(msg);
+        socket.on('response_telemetry',(msg)=>{
+            console.log(this)
+            this.changeWOD(JSON.stringify(msg));
          });
-        // let socket = io(this.state.endpoint);
-        // socket.on('response_telemetry',(msg)=>{
-        //     console.log(msg);
-        //     //TODO 받은 msg를 이용해 tm 테이블 업데이트
-        // })
         return(
             <div>
                 <h3>Real Time Data</h3>
                 <Button onClick={this.wsConnect}>Connect</Button>
                 <Button onClick={this.wsDisconnect}>Disconnect</Button>
                 <hr/>
-                <h3>Real Time Telemetry</h3>
-                <HovTable/>
+                <h3>WOD0</h3>
+                <WOD wod={this.state.wod}/>
                 <hr/>
-                <h3>Real Time Telecommand</h3>
+                <h3>FCS</h3>
                 <HovTable/>
                 <hr/>
             </div>
