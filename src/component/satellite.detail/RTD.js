@@ -7,19 +7,18 @@ import {WOD} from "../realtime_data/WOD";
 var socket = io('http://localhost:3001');
 
 export class RTD extends Component {
-
     constructor(props){
         super(props);
         this.state = {
-            wod : "none"
+            wod : 'none',
+            fcs : 'none'
         }
     }
 
     wsConnect = ()=>{
          console.log('wsConnect called');
          //socket = io(this.state.endpoint);
-         socket.emit('request_telemetry','satelliteName');
-         
+         socket.emit('request_telemetry','WOD');
     }
 
     wsDisconnect = ()=>{

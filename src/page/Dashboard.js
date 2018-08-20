@@ -5,8 +5,11 @@ import { Container, Row, Col,
 import {PageTemplate} from "../ui/PageTemplate";
 import Gmap from "../component/Gmap";
 import SatelliteSummary from "../component/SatelliteSummary";
+import * as satApiService from "../services/api/satellite";
+
 
 //test data
+/*
 const satelliteData = [
     {
       satName: "Test Satellite 01",
@@ -27,8 +30,32 @@ const satelliteData = [
         daysOfOperation: "30day"
       }
   ]
-
+*/
 export class Dashboard extends Component {
+    
+    constructor(props){
+        super();
+        this.state = {
+            fetching:false, // fetching 작업 (ajax 요청 작업)이 진행중인지 여부를 나타내는 flag
+            satelliteData:[],
+            gtdData:null
+        }  
+    }
+
+    componentDidMount(){
+        this.fetchDashboardInfo(); //대쉬보드 정보 읽어오기 수행
+    }
+
+    //async-await 사용
+    //https://velopert.com/2597 참조하여 작성함
+    fetchDashboardInfo = async () => {
+        this.setState({fetching:true}); // ajax 작업 시작
+        const satelliteData = await satApiService.getSatelliteList();//satellite summary에 전달할 위성 정보 fetch
+        this.setState({satelliteData:satelliteData.data});
+        this.setState({fetching:false}); // ajax 작업 종료
+        console.log(this.state.satelliteData);
+    }
+
     render(){
         return(
             <PageTemplate>
@@ -50,7 +77,7 @@ export class Dashboard extends Component {
                         </Row>
                         <Row>
                             <CardDeck>
-                                {satelliteData.map((satellite,i)=>
+                                {this.state.satelliteData.map((satellite,i)=>
                                 <Col sm="4"><SatelliteSummary key={i} {...satellite}/></Col>)}
                             </CardDeck>
                         </Row>
