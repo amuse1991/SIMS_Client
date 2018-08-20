@@ -5,22 +5,24 @@ import { Card, CardImg, CardText, CardBody,
 //import Taskbar from "../ui/Taskbar";
 import {taskStore} from "../mobx/stores/TaskStore";
 import TaskModel from '../model/TaskModel';
-import { NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom';
 
   
 class SatelliteSummary extends Component{
     
     static propTypes = {
-        satName: PropTypes.string,
-        imgSrc: PropTypes.string,
-        launchDate: PropTypes.string,
+        SatelliteCode: PropTypes.string,
+        SatelliteName: PropTypes.string,
+        ImgSource: PropTypes.string,
+        LaunchDate: PropTypes.string,
         daysOfOperation : PropTypes.string
     }
 
     static defaultProps = {
-        satName: "No name",
-        imgSrc: "",
-        launchDate: "No data",
+        SatelliteCode: null,
+        SatelliteName: "No name",
+        ImgSource: "",
+        LaunchDate: "No data",
         daysOfOperation : "No data"
     }
 
@@ -31,15 +33,15 @@ class SatelliteSummary extends Component{
     }
 
     render(){
-        const {satName, imgSrc, launchDate, daysOfOperation} = this.props;
+        const {SatelliteName, ImgSource, LaunchDate, daysOfOperation} = this.props;
         return (
                 <Card className='h-100'>
-                    <CardImg top width='50%' height="50%" src={imgSrc} alt={satName} />
+                    <CardImg top width='50%' height="50%" src={ImgSource} alt={SatelliteName} />
                     <CardBody className="text-center">
-                        <CardTitle>{satName}</CardTitle>
-                        <CardText>launch date : {launchDate}</CardText>
+                        <CardTitle>{SatelliteName}</CardTitle>
+                        <CardText>launch date : {LaunchDate}</CardText>
                         <CardText>days of operation : {daysOfOperation}</CardText>
-                        <NavLink to={'/detail/'+satName}><Button onClick={this.onViewDetailBtnClicked}>view detail</Button></NavLink>
+                        <NavLink to={'/detail/'+SatelliteName}><Button onClick={this.onViewDetailBtnClicked}>view detail</Button></NavLink>
                     </CardBody>
                 </Card>
         );
