@@ -1,24 +1,32 @@
 import React, { Component } from 'react';
 import { ButtonGroup, Button } from "reactstrap";
-import PropTypes from 'prop-types';
+import { taskStore } from '../mobx/stores/TaskStore';
+import { withRouter } from 'react-router-dom';
 
-export class TaskItem extends Component{
-    static propTypes = {
-        taskName: PropTypes.string
+class TaskItem extends Component{
+    //props : satelliteName, taskId
+
+    activate = ()=>{
+        taskStore.replaceTask(this.props.taskId);
     }
 
-    static defaultProps = {
-        taskName: "No name"
+    deactivate = async ()=>{
+        let nextTask = await taskStore.deactivateTask(this.props.taskId);
+        if(nextTask == null){
+            this.props.history.push('/dashboard');
+        }else{
+            taskStore.activateTask(nextTask);
+        }
     }
 
     render(){
-        //const {taskName} = this.props;
         return(
             <ButtonGroup  className='w-100'>
-                {/* <Button>{taskName}</Button> */}
-                <Button>Test Satellite 01</Button>
-                <Button>X</Button>
+                <Button onClick={this.activate}>{this.props.satelliteName}</Button>
+                <Button onClick={this.deactivate}>X</Button>
             </ButtonGroup>
         );
     }
 }
+
+export default withRouter(TaskItem);

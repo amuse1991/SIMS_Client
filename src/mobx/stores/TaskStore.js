@@ -3,7 +3,7 @@ import { observable, action } from "mobx";
 class TaskStore {
     @observable
     activeTask; // : Task
-    @observable 
+    @observable
     tasks; // : Array<Task>
 
     constructor(){
@@ -17,8 +17,35 @@ class TaskStore {
     }
 
     @action
-    deactivateTask(taskId){
-        //TODO : deactivate task
+    replaceTask = async (taskId)=>{
+        //task Id에 해당하는 task객체 검색
+        let readyTask;
+        await this.tasks.forEach(task => { //foreach가 비동기로 실행돼서 await해주었음
+            if(task.taskId === taskId){
+                readyTask = task;
+            }
+        });
+        this.activeTask = readyTask;
+    }
+
+    @action
+    deactivateTask = async (taskId)=>{
+        let rmvIdx;
+        //let rmvTask;
+        let nextTask;
+        await this.tasks.forEach((task,idx,tasks)=>{
+            if(task.taskId === taskId){
+                rmvIdx = idx;
+                //rmvTask = task;
+                if(rmvIdx === (tasks.length-1)){
+                    nextTask = null;
+                }else{
+                    nextTask = tasks[rmvIdx+1];
+                }
+            }
+        });
+        this.tasks.splice(rmvIdx,1); //삭제
+        return nextTask; //삭제한 task가 작업중인 화면이었던 경우 화면 전환을 위해 다음 작업을 반환
     }
 
     @action

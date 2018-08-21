@@ -1,3 +1,4 @@
+/*
 class SatelliteModel {
     id;
     name;
@@ -8,3 +9,4 @@ class SatelliteModel {
 }
 
 export default Satellite;
+*/
