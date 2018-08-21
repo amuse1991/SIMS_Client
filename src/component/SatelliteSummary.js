@@ -27,6 +27,7 @@ class SatelliteSummary extends Component{
     }
 
     onViewDetailBtnClicked = ()=>{
+        //task 추가
         let newTask = new TaskModel('01','testSat','true'); //test code
         taskStore.addTask(newTask);
         taskStore.activateTask(newTask);
@@ -42,6 +43,7 @@ class SatelliteSummary extends Component{
                         <CardText>launch date : {LaunchDate}</CardText>
                         <CardText>days of operation : {daysOfOperation}</CardText>
                         <NavLink to={'/detail/'+SatelliteName}><Button onClick={this.onViewDetailBtnClicked}>view detail</Button></NavLink>
+                        <Button onClick={this.onViewDetailBtnClicked}>view detail</Button>
                     </CardBody>
                 </Card>
         );
