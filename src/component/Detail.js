@@ -28,7 +28,6 @@ class Detail extends Component{
     }
     
     render(){
-        console.log('detail render')
         let activeTask = taskStore.activeTask;
         return (
         <div>

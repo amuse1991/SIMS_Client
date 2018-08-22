@@ -9,10 +9,11 @@ export function getMeta(telemetryCode, showColumns){
     });
 }
 
-export function getData(telemetryCode,selectOption){
+export function getData(telemetryCode,startDate,endDate){
     return axios.post(`${serverPath}/tm/archived`,{
         telemetryCode:telemetryCode,
-        selectOption:selectOption
+        startDate:startDate,
+        endDate:endDate
     });
 }
 

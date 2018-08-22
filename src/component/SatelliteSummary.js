@@ -36,8 +36,6 @@ class SatelliteSummary extends Component{
         let rtdTmTypes = await rtdApi.getTMlistBySatCode(SatelliteCode);
         let rtdTcTypes = await rtdApi.getTClistBySatCode(SatelliteCode);
         let newTask = new TaskModel(SatelliteCode,SatelliteName,tmList.data,tcList.data,rtdTmTypes.data,rtdTcTypes.data);
-        console.log("newTask");
-        console.log(newTask);
         taskStore.addTask(newTask);
         taskStore.activateTask(newTask);
         this.props.history.push(`/detail/${SatelliteName}`);

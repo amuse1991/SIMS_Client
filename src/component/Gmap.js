@@ -5,8 +5,8 @@ import OverlaySatellite from "./OverlaySatellite"
 
 const GmapComponent = compose(
   withProps({
-    //googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyAwBPNEdjd9oJh5MaOE7F2EpRtkh7Q007A",
-    googleMapURL: "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places",
+    googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyAC460fE9QJu8X8C1ajGyzCqKw8cB_waRE",
+    //googleMapURL: "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places",
     loadingElement: <div style={{ height: `100%` }} />,
     containerElement: <div style={{ height: `400px` }} />,
     mapElement: <div style={{ height: `100%` }} />,

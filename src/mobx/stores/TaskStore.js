@@ -36,6 +36,7 @@ class TaskStore {
                 readyTask = task;
             }
         });
+        console.log(readyTask);
         this.activeTask = readyTask;
     }
 

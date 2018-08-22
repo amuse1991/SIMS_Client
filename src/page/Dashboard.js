@@ -8,29 +8,6 @@ import SatelliteSummary from "../component/SatelliteSummary";
 import * as satApiService from "../services/api/satellite";
 
 
-//test data
-/*
-const satelliteData = [
-    {
-      satName: "Test Satellite 01",
-      imgSrc: "https://cdn.pixabay.com/photo/2012/11/28/11/25/satellite-67718_960_720.jpg",
-      launchDate: "2018.05.01",
-      daysOfOperation: "1day"
-    },
-    {
-      satName: "Test Satellite 02",
-      imgSrc: "https://cdn.pixabay.com/photo/2015/03/26/18/36/spacex-693229_960_720.jpg",
-      launchDate: "2016.05.15",
-      daysOfOperation: "15day"
-    },
-    {
-        satName: "Test Satellite 03",
-        imgSrc: "https://cdn.pixabay.com/photo/2015/03/26/18/36/satellite-693216_960_720.jpg",
-        launchDate: "2016.05.30",
-        daysOfOperation: "30day"
-      }
-  ]
-*/
 export class Dashboard extends Component {
     
     constructor(props){
@@ -53,7 +30,6 @@ export class Dashboard extends Component {
         const satelliteData = await satApiService.getSatelliteList();//satellite summary에 전달할 위성 정보 fetch
         this.setState({satelliteData:satelliteData.data});
         this.setState({fetching:false}); // ajax 작업 종료
-        console.log(this.state.satelliteData);
     }
 
     render(){
