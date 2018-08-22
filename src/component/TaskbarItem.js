@@ -7,8 +7,6 @@ import  TaskItem  from "./TaskItem"
 export class TaskbarItem extends Component {
   render(){
     const {store} = this.props;
-    //console.log(store)
-    //console.log(store.tasks);
       return(
         <div>
           <Nav vertical>

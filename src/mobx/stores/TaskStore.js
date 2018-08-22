@@ -12,6 +12,17 @@ class TaskStore {
     }
 
     @action
+    findTaskByTaskId = (taskId)=>{
+        let resultTask;
+        this.tasks.forEach((task)=>{
+            if(task.taskId === taskId){
+                resultTask = task;
+            }
+        });
+        return resultTask;
+    }
+
+    @action
     activateTask(task){
         this.activeTask = task;
     }

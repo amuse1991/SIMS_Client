@@ -5,7 +5,9 @@ import { Card, CardImg, CardText, CardBody,
 //import Taskbar from "../ui/Taskbar";
 import {taskStore} from "../mobx/stores/TaskStore";
 import TaskModel from '../model/TaskModel';
-import { NavLink } from 'react-router-dom';
+import * as satApi from "../services/api/satellite";
+import * as rtdApi from "../services/api/rtd";
+import { withRouter } from 'react-router-dom';
 
   
 class SatelliteSummary extends Component{
@@ -26,12 +28,19 @@ class SatelliteSummary extends Component{
         daysOfOperation : "No data"
     }
 
-    onViewDetailBtnClicked = ()=>{
+    onViewDetailBtnClicked = async ()=>{
         //task 추가
         const {SatelliteCode, SatelliteName} = this.props;
-        let newTask = new TaskModel(SatelliteCode,SatelliteName);
+        let tmList = await satApi.getTMmetaListBySatCode(SatelliteCode);
+        let tcList = await satApi.getTCmetaListBySatCode(SatelliteCode);
+        let rtdTmTypes = await rtdApi.getTMlistBySatCode(SatelliteCode);
+        let rtdTcTypes = await rtdApi.getTClistBySatCode(SatelliteCode);
+        let newTask = new TaskModel(SatelliteCode,SatelliteName,tmList.data,tcList.data,rtdTmTypes.data,rtdTcTypes.data);
+        console.log("newTask");
+        console.log(newTask);
         taskStore.addTask(newTask);
         taskStore.activateTask(newTask);
+        this.props.history.push(`/detail/${SatelliteName}`);
     }
 
     render(){
@@ -43,11 +52,11 @@ class SatelliteSummary extends Component{
                         <CardTitle>{SatelliteName}</CardTitle>
                         <CardText>launch date : {LaunchDate}</CardText>
                         <CardText>days of operation : {daysOfOperation}</CardText>
-                        <NavLink to={'/detail/'+SatelliteName}><Button onClick={this.onViewDetailBtnClicked}>view detail</Button></NavLink>
+                        <Button onClick={this.onViewDetailBtnClicked}>view detail</Button>
                     </CardBody>
                 </Card>
         );
     }
 }
 
-export default SatelliteSummary;
+export default withRouter(SatelliteSummary);
