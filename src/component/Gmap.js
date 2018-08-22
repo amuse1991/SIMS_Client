@@ -14,6 +14,7 @@ const GmapComponent = compose(
   withScriptjs,
   withGoogleMap
 )((props) =>
+  //props : orbitData
   <GoogleMap
     defaultZoom={8}
     defaultCenter={{ lat: -34.397, lng: 150.644 }}

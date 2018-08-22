@@ -3,7 +3,8 @@ import { Container, Row, Col,
         CardDeck
         } from "reactstrap";
 import {PageTemplate} from "../ui/PageTemplate";
-import Gmap from "../component/Gmap";
+//import Gmap from "../component/Gmap";
+import {GTD} from "../component/satellite.detail/GTD";
 import SatelliteSummary from "../component/SatelliteSummary";
 import * as satApiService from "../services/api/satellite";
 
@@ -40,11 +41,11 @@ export class Dashboard extends Component {
                     <hr/>
                     <Container>
                         <div>
-                            <Row>
+                            {/* <Row>
                                 <Col><h3>Ground Track Display</h3></Col>
-                            </Row>
+                            </Row> */}
                             <Row>
-                                <Col className="Map"><Gmap/></Col>
+                                <Col className="Map"><GTD satCode={'all'}/></Col>
                             </Row>
                         </div>
                         <hr/>

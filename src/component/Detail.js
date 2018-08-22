@@ -72,7 +72,7 @@ class Detail extends Component{
                     <TabPane tabId="gtd">
                         <Row>
                         <Col sm="12">
-                            <GTD task={activeTask}/>
+                            <GTD satCode={activeTask.satelliteCode}/>
                         </Col>
                         </Row>
                     </TabPane>
