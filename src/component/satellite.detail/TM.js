@@ -9,12 +9,7 @@ import HovTable from "../chart/hovTable";
 import { Form, FormGroup, Label, Input, Button } from "reactstrap";
 import * as tmApi from "../../services/api/tm";
 
-
 export class TM extends Component {
-
-    //startDate = null;
-    //endDate = null;
-
     //props:task
     constructor(props){
         super(props);
@@ -22,13 +17,17 @@ export class TM extends Component {
             tmData:null,
             selectedTmCode:null,
             selectedtmName:null,
-            tmDataLoaded:false
+            tmDataLoaded:false,
+            startDate:null,
+            endDate:null
         };
     }
 
     fetchData = async (event)=>{
-        let tmCode = this.state.selectedTmCode;
-        let tmData = await tmApi.getData(tmCode);
+        let {selectedTmCode,startDate,endDate} = this.state;
+        console.log(startDate)
+        console.log(endDate)
+        let tmData = await tmApi.getData(selectedTmCode,startDate,endDate);
         await this.setState({
             tmData:tmData,
             tmDataLoaded:true
@@ -41,6 +40,18 @@ export class TM extends Component {
             selectedTmCode:event.target.id, //button id == tmCode
             selectedtmName:event.target.name
         });
+    }
+
+    setStartDate = (event)=>{
+        this.setState({
+            startDate:event.target.value
+        })
+    }
+
+    setEndDate = (event)=>{
+        this.setState({
+            endDate:event.target.value
+        })
     }
 
     render(){
@@ -65,8 +76,8 @@ export class TM extends Component {
                         </Input> */}
                         </FormGroup>
                         <FormGroup>
-                            <Label for="startDate">시작일<Input type="date" name="startDate" id="startDate" /></Label>
-                            <Label for="endDate">종료일<Input type="date" name="endDate" id="endDate"/></Label>
+                            <Label for="startDate">시작일<Input type="date" name="startDate" id="startDate" onChange={this.setStartDate} /></Label>
+                            <Label for="endDate">종료일<Input type="date" name="endDate" id="endDate" onChange={this.setEndDate}/></Label>
                         </FormGroup>
                     </Form>
                     <Button onClick={this.fetchData}>검색</Button>

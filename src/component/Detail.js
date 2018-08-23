@@ -19,6 +19,18 @@ class Detail extends Component{
         };
     }
 
+    // componentDidMount(){
+    //     console.log('detail mounted');
+    // }
+
+    // componentDidUpdate(){
+    //     console.log("dt updated!");
+    // }
+
+    // componentWillUnmount(){
+    //     console.log("dt unmounted");
+    // }
+
     toggle(tab) {
         if (this.state.activeTab !== tab) {
             this.setState({

@@ -1,6 +1,6 @@
 import React from "react"
 import { compose, withProps } from "recompose"
-import { withScriptjs, withGoogleMap, GoogleMap, OverlayView } from "react-google-maps"
+import { withScriptjs, withGoogleMap, GoogleMap, OverlayView} from "react-google-maps"
 import OverlaySatellite from "./OverlaySatellite"
 
 const GmapComponent = compose(
@@ -13,22 +13,31 @@ const GmapComponent = compose(
   }),
   withScriptjs,
   withGoogleMap
-)((props) =>
-  //props : orbitData
-  <GoogleMap
-    defaultZoom={8}
-    defaultCenter={{ lat: -34.397, lng: 150.644 }}
-  >
-    {/*props.isMarkerShown && <Marker position={{ lat: -34.397, lng: 150.644 }} onClick={props.onMarkerClick} >*/}
-    <OverlayView 
-        position={{ lat: -34.397, lng: 150.644 }}
-        mapPaneName={OverlayView.OVERLAY_LAYER}
-        getPixelPositionOffset={getPixelPositionOffset}
+)((props) =>{
+  //let {Lat,Long,Alt,SatelliteCode} = props.orbitData;
+  return(
+      <GoogleMap
+      defaultZoom={8}
+      defaultCenter={{ lat: -34.397, lng: 150.644 }}
       >
-        <OverlaySatellite imgSrc="http://pds.joins.com/news/component/newsis/201406/16/NISI20140616_0009799793_web.jpg"/>
-      </OverlayView>
-  </GoogleMap>
-  
+      {/*props.isMarkerShown && <Marker position={{ lat: -34.397, lng: 150.644 }} onClick={props.onMarkerClick} >*/}
+        { <OverlayView 
+          //position={{ lat: Lat, lng: Long }}
+          position={{ lat: -34.397, lng: 150.644 }}
+          mapPaneName={OverlayView.OVERLAY_LAYER}
+          getPixelPositionOffset={getPixelPositionOffset}
+        >
+          <OverlaySatellite 
+            imgSrc={window.location.origin+'/img/ds2.png'}
+            //satelliteCode={SatelliteCode}
+            //lat={Lat}
+            //lng={Long}
+            //alt={Alt}
+          />
+        </OverlayView>}
+      </GoogleMap>
+    );
+  }
 )
 
 const getPixelPositionOffset = (width, height) => ({
@@ -37,6 +46,7 @@ const getPixelPositionOffset = (width, height) => ({
 })
 
 class Gmap extends React.PureComponent {
+  //props : orbitData
   state = {
     isMarkerShown: false,
   }

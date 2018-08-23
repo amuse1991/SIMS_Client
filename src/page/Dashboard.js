@@ -22,7 +22,16 @@ export class Dashboard extends Component {
 
     componentDidMount(){
         this.fetchDashboardInfo(); //대쉬보드 정보 읽어오기 수행
+        //console.log("dashboard mounted");
     }
+
+    // componentDidUpdate(){
+    //     console.log("dashboard updated");
+    // }
+
+    // componentWillUnmount(){
+    //     console.log("dashboard unmounted");
+    // }
 
     //async-await 사용
     //https://velopert.com/2597 참조하여 작성함

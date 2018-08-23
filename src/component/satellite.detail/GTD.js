@@ -11,22 +11,20 @@ export class GTD extends Component {
         this.state = {
             time: nowTime,//실제로는 현재시간으로 초기화
             orbitData:null,
-            dataLoad:false
+            dataLoad:false,
+            fetchTerm:2 //초 단위
         };
-    }
-    
-    timer=()=>{
-
     }
 
     fetchOrbitData= async()=>{
         let {satCode} = this.props;
         let time = this.state.time;
+        let term = this.state.fetchTerm;
         let orbitData;
         if(satCode === 'all'){ //전체 위성 조회
-            orbitData = await gtdApi.getAllOrbitData(time);
+            orbitData = await gtdApi.getAllOrbitData(time,term);
         }else{ //특정 위성 조회
-            orbitData = await gtdApi.getOrbitDataBySatCode(satCode,time);
+            orbitData = await gtdApi.getOrbitDataBySatCode(satCode,time,term);
         }
         await this.setState({
             orbitData:orbitData,
@@ -39,13 +37,13 @@ export class GTD extends Component {
     }
 
     render(){
-        if(this.state.dataLoad === false){
+        if(this.state.dataLoad === true){
             return(
                 <div>
                 <h3>Ground Track Display</h3>
                 {/* <p> time:{this.state.time}</p> */}
                 <hr/>
-                loading...
+                <Gmap orbitData={this.state.orbitData}/>
             </div>
             );
         }
@@ -54,7 +52,7 @@ export class GTD extends Component {
                 <h3>Ground Track Display</h3>
                 {/* <p> time:{this.state.time}</p> */}
                 <hr/>
-                <Gmap/>
+                loading...
             </div>
         );
     }

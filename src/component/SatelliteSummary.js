@@ -45,7 +45,7 @@ class SatelliteSummary extends Component{
         const {SatelliteName, ImgSource, LaunchDate, daysOfOperation} = this.props;
         return (
                 <Card className='h-100'>
-                    <CardImg top width='50%' height="50%" src={ImgSource} alt={SatelliteName} />
+                    <CardImg top width='50%' height="50%" src={window.location.origin+ImgSource} alt={SatelliteName} />
                     <CardBody className="text-center">
                         <CardTitle>{SatelliteName}</CardTitle>
                         <CardText>launch date : {LaunchDate}</CardText>
