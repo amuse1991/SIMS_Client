@@ -23,3 +23,11 @@ export function getChartType(telemetryCode,selectOption){
         selectOption:selectOption
     });
 }
+
+export function getDataForCharting(telemetryCode,startDate,endDate){
+    return axios.post(`${serverPath}/tm/chart/data`,{
+        telemetryCode:telemetryCode,
+        startDate:startDate,
+        endDate:endDate
+    });
+}

@@ -8,6 +8,8 @@ import HovTable from "../chart/hovTable";
 */
 import { Form, FormGroup, Label, Input, Button } from "reactstrap";
 import * as tmApi from "../../services/api/tm";
+import Chart from "../Chart"
+//import { getAllOrbitData } from "../../services/api/gtd";
 
 export class TM extends Component {
     //props:task
@@ -17,22 +19,19 @@ export class TM extends Component {
             tmData:null,
             selectedTmCode:null,
             selectedtmName:null,
-            tmDataLoaded:false,
             startDate:null,
-            endDate:null
+            endDate:null,
+            tmDataLoaded:false
         };
     }
 
     fetchData = async (event)=>{
         let {selectedTmCode,startDate,endDate} = this.state;
-        console.log(startDate)
-        console.log(endDate)
-        let tmData = await tmApi.getData(selectedTmCode,startDate,endDate);
+        let tmData = await tmApi.getDataForCharting(selectedTmCode,startDate,endDate);
         await this.setState({
-            tmData:tmData,
+            tmData:tmData.data,
             tmDataLoaded:true
         })
-        console.log(this.state.tmData);
     }
 
     selectTM = async (event)=>{
@@ -54,10 +53,46 @@ export class TM extends Component {
         })
     }
 
+    // makeChart = ()=>{
+    //     let hello= <p>hello</p>
+    //     return hello
+    // }
+    _extractDataByChartGroup = (data,group)=>{
+        let result = []
+        for(let i=0; i<data.chartData.length; i++){
+            let item = data.chartData[i];
+            if(item.ChartGroup === group){
+                result.push(item);
+            }
+        }
+        return result;
+    }
+
     render(){
-        //console.log("tm render called");
-        //console.log(this.state.tmData);
         const {task} = this.props;
+        const tmData = this.state.tmData;
+        if(this.state.tmDataLoaded === false){
+            return (
+                <div>
+                    <h3>Telematry Data</h3>
+                    <hr/>
+                    <h4>Telematry Type : {this.state.selectedtmName}</h4>
+                    {task.tmList.map((tm)=>
+                    <Button id={tm.TelemetryCode} name={tm.TelemetryName} onClick={this.selectTM} active={this.state.selectedTM === tm.TelemetryCode}>
+                        {tm.TelemetryName}</Button>)}
+                    <hr/>
+                    <div>
+                        <Form>
+                            <FormGroup>
+                                <Label for="startDate">시작일<Input type="date" name="startDate" id="startDate" onChange={this.setStartDate} /></Label>
+                                <Label for="endDate">종료일<Input type="date" name="endDate" id="endDate" onChange={this.setEndDate}/></Label>
+                            </FormGroup>
+                        </Form>
+                        <Button onClick={this.fetchData}>검색</Button>
+                    </div>
+                </div>
+            );
+        }
         return(
             <div>
                 <h3>Telematry Data</h3>
@@ -70,12 +105,6 @@ export class TM extends Component {
                 <div>
                     <Form>
                         <FormGroup>
-                        {/* <Label for="telemetry type">Telemetry Type</Label>
-                        <Input type="select" name="tmType" id="tmType">
-                        {task.tmList.map((tm)=><option tmcode={tm.TelemetryCode}>{tm.TelemetryName}</option>)}
-                        </Input> */}
-                        </FormGroup>
-                        <FormGroup>
                             <Label for="startDate">시작일<Input type="date" name="startDate" id="startDate" onChange={this.setStartDate} /></Label>
                             <Label for="endDate">종료일<Input type="date" name="endDate" id="endDate" onChange={this.setEndDate}/></Label>
                         </FormGroup>
@@ -84,6 +113,17 @@ export class TM extends Component {
                 </div>
                 <hr/>
                 <div>
+                   {
+                    tmData.chartGroup.map((group,i)=>{
+                        let items = this._extractDataByChartGroup(tmData,group);
+                        return (
+                            <div id={group}>
+                                <h5>{group}</h5>
+                                <Chart key={i} chartItems={items} chartGroup={group}/>
+                            </div>
+                        );
+                    })
+                   }
                     {
                     /* 
                     //chart sample
