@@ -1,10 +1,10 @@
 import React,{Component} from 'react';
 import {TabContent, TabPane, Nav, NavItem, NavLink, Row, Col} from 'reactstrap';
 import classnames from 'classnames';
-import {GTD} from "../component/satellite.detail/GTD";
-import {RTD} from "../component/satellite.detail/RTD";
-import {TC} from "../component/satellite.detail/TC";
-import {TM} from "../component/satellite.detail/TM";
+import {GTD} from "./satellite.detail/GTD";
+import {RTD} from "./satellite.detail/RTD";
+import {TC} from "./satellite.detail/TC";
+import {TM} from "./satellite.detail/TM";
 import { withRouter } from 'react-router-dom';
 import { observer } from "mobx-react";
 import { taskStore } from "../mobx/stores/TaskStore";

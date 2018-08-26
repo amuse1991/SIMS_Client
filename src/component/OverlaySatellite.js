@@ -20,11 +20,11 @@ export default class OverlaySatellite extends Component {
     }
 
     render(){
-        const {imgSrc, satName, lat, lng, alt} = this.props;
+        const {imgSrc, satelliteCode, lat, lng, alt} = this.props;
         return(
             <div /*style={{ background: `black`, border: `1px solid #ccc`, padding: 15 }}*/>
             <img src={imgSrc} alt="test" style={{width:'30px',height:'30px'}}/  >
-            <p> name : {satName} <br/>
+            <p> name : {satelliteCode} <br/>
                 lat : {lat} <br/>
                 lng : {lng} <br/>
                 alt : {alt} <br/>

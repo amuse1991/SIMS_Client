@@ -1,7 +1,13 @@
 import React,{Component} from 'react';
 import {Line} from 'react-chartjs-2';
-import { Table } from 'reactstrap';
-//import HovTable from "../chart/hovTable";
+import HoverTable from './chart/HoverTable';
+
+const dataColor = [
+    'rgba(102, 0, 102,1)',
+    'rgba(255,0,102,1)',
+    'rgba(0,204,102,1)',
+    'rgba(128, 159, 255,1)'
+]
 
 export default class Chart extends Component{
     //props:chartItems, chrtGroup, label
@@ -21,48 +27,67 @@ export default class Chart extends Component{
     }
 
     makeConfig = ()=>{
-        console.log("config called")
-        console.log(this.props.chartItems);
-        //let datasets = _makeDatasets()
-        let config = {
-            type:this.state.types,
-            labels: this.props.label,//time
-            datasets: [
-                {
-                    label: 'My First dataset',
-                    fill: false,
-                    lineTension: 0.1,
-                    backgroundColor: 'rgba(75,192,192,0.4)',
-                    borderColor: 'rgba(75,192,192,1)',
-                    borderCapStyle: 'butt',
-                    borderDash: [],
-                    borderDashOffset: 0.0,
-                    borderJoinStyle: 'miter',
-                    pointBorderColor: 'rgba(75,192,192,1)',
-                    pointBackgroundColor: '#fff',
-                    pointBorderWidth: 1,
-                    pointHoverRadius: 5,
-                    pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-                    pointHoverBorderColor: 'rgba(220,220,220,1)',
-                    pointHoverBorderWidth: 2,
-                    pointRadius: 1,
-                    pointHitRadius: 10,
-                    data: this.props.chartItems[0].data
+        const type = this.state.type;
+        const items = this.props.chartItems;
+        let config;
+        switch(type){
+            case 'line':
+            config = {
+                type:this.state.types,
+                labels: this.props.label,//time
+                datasets: this._makeLineDatasets()
+            }
+            break;
+            case 'table':
+                let th = [];
+                let td = [];
+                for(let i=0; i<items.length; i++){
+                    th.push(items[i].DataName);
+                    td.push(items[i].data)
                 }
-            ]
+                config = {
+                    th:th,
+                    data:td,
+                    distinct:true
+                }
+                break;
+            default:
+                config = null;
         }
+        
         return config;
     }
 
-    // _makeDatasets = ()=>{
-    //     const {chartItems} = this.props;
-    //     let datasets = [];
-    //     for(let idx=0;idx<chartItems.length;idx++){
-    //         let dataset = {
-
-    //         }
-    //     }
-    // }
+    _makeLineDatasets = ()=>{
+        const {chartItems} = this.props;
+        let datasets = [];
+        for(let idx=0;idx<chartItems.length;idx++){
+            let item = chartItems[idx];
+            let dataset = {
+                label: item.DataName,
+                fill: false,
+                lineTension: 0.1,
+                backgroundColor: dataColor[idx],
+                borderColor: dataColor[idx],
+                borderCapStyle: 'butt',
+                borderDash: [],
+                borderDashOffset: 0.0,
+                borderJoinStyle: 'miter',
+                pointBorderColor: dataColor[idx],
+                pointBackgroundColor: '#fff',
+                pointBorderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: dataColor[idx],
+                pointHoverBorderColor: 'rgba(220,220,220,1)',
+                pointHoverBorderWidth: 2,
+                pointRadius: 1,
+                pointHitRadius: 10,
+                data: item.data
+            }
+            datasets.push(dataset);
+        }
+        return datasets;
+    }
 
     render(){
         const type = this.state.type
@@ -72,7 +97,7 @@ export default class Chart extends Component{
             );
         }else if(type === 'table'){
             return(
-                <div><Table/></div>
+                <div><HoverTable data={this.state.config}/></div>
             );
         }
         return (

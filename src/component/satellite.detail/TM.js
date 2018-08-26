@@ -53,10 +53,6 @@ export class TM extends Component {
         })
     }
 
-    // makeChart = ()=>{
-    //     let hello= <p>hello</p>
-    //     return hello
-    // }
     _extractDataByChartGroup = (data,group)=>{
         let result = []
         for(let i=0; i<data.chartData.length; i++){
