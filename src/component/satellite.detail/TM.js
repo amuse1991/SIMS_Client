@@ -68,6 +68,17 @@ export class TM extends Component {
         return result;
     }
 
+    _getLabelData = (data,label)=>{
+        let result;
+        for(let i=0; i<data.chartData.length; i++){
+            let item = data.chartData[i];
+            if(item.DataName === label){
+                result = item.data;
+            }
+        }
+        return result;
+    }
+
     render(){
         const {task} = this.props;
         const tmData = this.state.tmData;
@@ -116,10 +127,11 @@ export class TM extends Component {
                    {
                     tmData.chartGroup.map((group,i)=>{
                         let items = this._extractDataByChartGroup(tmData,group);
+                        let label = this._getLabelData(tmData,'Time');
                         return (
                             <div id={group}>
                                 <h5>{group}</h5>
-                                <Chart key={i} chartItems={items} chartGroup={group}/>
+                                <Chart key={i} chartItems={items} chartGroup={group} label={label}/>
                             </div>
                         );
                     })

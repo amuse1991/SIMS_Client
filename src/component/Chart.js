@@ -1,14 +1,15 @@
 import React,{Component} from 'react';
 import {Line} from 'react-chartjs-2';
+import { Table } from 'reactstrap';
 //import HovTable from "../chart/hovTable";
 
 export default class Chart extends Component{
-    //props:chartItems
+    //props:chartItems, chrtGroup, label
     constructor(props)
     {   
         super(props);
         this.state = {
-            types:this.props.chartItems[0].chartType,
+            type:this.props.chartItems[0].ChartType,
             config:null
         }
     }
@@ -22,9 +23,10 @@ export default class Chart extends Component{
     makeConfig = ()=>{
         console.log("config called")
         console.log(this.props.chartItems);
+        //let datasets = _makeDatasets()
         let config = {
             type:this.state.types,
-            //labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            labels: this.props.label,//time
             datasets: [
                 {
                     label: 'My First dataset',
@@ -52,12 +54,29 @@ export default class Chart extends Component{
         return config;
     }
 
+    // _makeDatasets = ()=>{
+    //     const {chartItems} = this.props;
+    //     let datasets = [];
+    //     for(let idx=0;idx<chartItems.length;idx++){
+    //         let dataset = {
+
+    //         }
+    //     }
+    // }
+
     render(){
+        const type = this.state.type
+        if(type === 'line'){
+            return(
+                <div><Line data={this.state.config}/></div>
+            );
+        }else if(type === 'table'){
+            return(
+                <div><Table/></div>
+            );
+        }
         return (
-            <div>
-                <p>hello</p>
-            <Line data={this.state.config}/>
-            </div>
+            <div></div>
         )
     }
 }
