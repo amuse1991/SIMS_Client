@@ -11,13 +11,13 @@ export function disconnect(rtdType){
 }
 
 export function getTMlistBySatCode(satelliteCode){
-    return axios.post(`${serverPath}/tm/list`,{
+    return axios.post(`${serverPath}/rtd/tm/list`,{
         satelliteCode:satelliteCode
     });
 }
 
 export function getTClistBySatCode(satelliteCode){
-    return axios.post(`${serverPath}/tc/list`,{
+    return axios.post(`${serverPath}/rtd/tc/list`,{
         satelliteCode:satelliteCode
     });
 }

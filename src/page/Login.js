@@ -1,24 +1,40 @@
 import React,{Component} from "react";
 import { Form, FormGroup, Input, Button, Card, Label, Modal, ModalHeader, ModalBody, ModalFooter} from "reactstrap";
 //import Background from "../static/image/main.jpg";
-import { NavLink } from "react-router-dom";
+//import { NavLink } from "react-router-dom";
+import * as userApi from "../services/api/user"
 
 export class Login extends Component{
     
     constructor(props) {
         super(props);
         this.state = {
-          modal: false
+          modal: false,
+          id: '',
+          pwd: ''
         }
         this.toggle = this.toggle.bind(this); //modal toggle
     }
 
-    login = ()=>{
-
+    login = async ()=>{
+        let res = await userApi.login(this.state.id,this.state.pwd);
+        if(res.status === 200){
+            this.props.history.push('/dashboard');
+        }else{
+            alert(`로그인 실패\n status : ${res.status}\n ${res.data}`);
+        }
     }
 
     signup = ()=>{
 
+    }
+
+    handleIdInput = (event) => {
+        this.setState({id:event.target.value});
+    }
+
+    handlePwdInput = (event) => {
+        this.setState({pwd:event.target.value});
     }
 
     toggle() { //modal toggle
@@ -49,13 +65,14 @@ export class Login extends Component{
                         <Form>
                             <FormGroup>
                                 {/* <Label for="uid">ID</Label> */}
-                                <Input type="email" name="id" id="uid" placeholder="Enter your email"/>
+                                <Input type="text" name="id" id="uid" placeholder="Enter your email" onChange={this.handleIdInput}/>
                             </FormGroup>
                             <FormGroup>
                                 {/* <Label for="pwd">PASSWORD</Label> */}
-                                <Input type="password" name="password" id="pwd" placeholder="Enter your password"/>
+                                <Input type="password" name="password" id="pwd" placeholder="Enter your password" onChange={this.handlePwdInput}/>
                             </FormGroup>
-                            <NavLink to="/dashboard"><Button onClick={this.login}>로그인</Button></NavLink>
+                            <Button onClick={this.login}>로그인</Button>
+                            {/* <NavLink to="/dashboard"><Button onClick={this.login}>로그인</Button></NavLink> */}
                             <Button onClick={this.toggle}>회원가입</Button>
                         </Form>
                     </Card>

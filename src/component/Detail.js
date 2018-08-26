@@ -5,98 +5,117 @@ import {GTD} from "../component/satellite.detail/GTD";
 import {RTD} from "../component/satellite.detail/RTD";
 import {TC} from "../component/satellite.detail/TC";
 import {TM} from "../component/satellite.detail/TM";
+import { withRouter } from 'react-router-dom';
+import { observer } from "mobx-react";
+import { taskStore } from "../mobx/stores/TaskStore";
 
-
-export class Detail extends Component{
+@observer
+class Detail extends Component{
     constructor(props) {
         super(props);
-    
         this.toggle = this.toggle.bind(this);
         this.state = {
-          activeTab: '1'
+          activeTab: 'gtd'
         };
-      }
-    
-      toggle(tab) {
+    }
+
+    // componentDidMount(){
+    //     console.log('detail mounted');
+    // }
+
+    // componentDidUpdate(){
+    //     console.log("dt updated!");
+    // }
+
+    // componentWillUnmount(){
+    //     console.log("dt unmounted");
+    // }
+
+    toggle(tab) {
         if (this.state.activeTab !== tab) {
-          this.setState({
+            this.setState({
             activeTab: tab
-          });
+            });
         }
-      }
+    }
     
     render(){
-    return (
-    <div>
-        <h2>Test Satellite 01</h2>
+        let activeTask = taskStore.activeTask;
+        return (
         <div>
-            <Nav tab>
-                <NavItem>
-                    <NavLink
-                    className={classnames({ active: this.state.activeTab === '1' })}
-                    onClick={() => { this.toggle('1'); }}
-                    >
-                    Ground Track Display
-                    </NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink
-                    className={classnames({ active: this.state.activeTab === '2' })}
-                    onClick={() => { this.toggle('2'); }}
-                    >
-                    Telemetry
-                    </NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink
-                    className={classnames({ active: this.state.activeTab === '3' })}
-                    onClick={() => { this.toggle('3'); }}
-                    >
-                    Telecommand
-                    </NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink
-                    className={classnames({ active: this.state.activeTab === '4' })}
-                    onClick={() => { this.toggle('4'); }}
-                    >
-                    Real Time Data
-                    </NavLink>
-                </NavItem>
-            </Nav>
-
-            <TabContent activeTab={this.state.activeTab}>
-                <TabPane tabId="1">
+            <h2>{activeTask.satelliteName}</h2>
+            <div>
+                <Nav tab>
+                    <NavItem>
+                        <NavLink
+                        className={classnames({ active: this.state.activeTab === 'gtd' })}
+                        onClick={() => { this.toggle('gtd'); }}
+                        >
+                        Ground Track Display
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink
+                        className={classnames({ active: this.state.activeTab === 'tm' })}
+                        onClick={() => { this.toggle('tm'); }}
+                        >
+                        Telemetry
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink
+                        className={classnames({ active: this.state.activeTab === 'tc' })}
+                        onClick={() => { this.toggle('tc'); }}
+                        >
+                        Telecommand
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink
+                        className={classnames({ active: this.state.activeTab === 'rtd' })}
+                        onClick={() => { this.toggle('rtd'); }}
+                        >
+                        Real Time Data
+                        </NavLink>
+                    </NavItem>
+                </Nav>
+                
+                <TabContent activeTab={this.state.activeTab}>
+                    <TabPane tabId="gtd">
+                        <Row>
+                        <Col sm="12">
+                            <GTD satCode={activeTask.satelliteCode}/>
+                        </Col>
+                        </Row>
+                    </TabPane>
+                    <TabPane tabId="tm">
                     <Row>
-                    <Col sm="12">
-                        <GTD/>
-                    </Col>
+                        <Col sm="12">
+                            {/* <TM tmList={this.state.telemetryList}/> */}
+                            <TM task={activeTask}/> 
+                        </Col>
                     </Row>
-                </TabPane>
-                <TabPane tabId="2">
-                <Row>
-                    <Col sm="12">
-                        <TM/>
-                    </Col>
-                </Row>
-                </TabPane>
-                <TabPane tabId="3">
-                    <Row>
-                    <Col sm="12">
-                        <TC/>
-                    </Col>
-                    </Row>
-                </TabPane>
-                <TabPane tabId="4">
-                    <Row>
-                    <Col sm="12">
-                        <RTD/>
-                    </Col>
-                    </Row>
-                </TabPane>
-             </TabContent>
+                    </TabPane>
+                    <TabPane tabId="tc">
+                        <Row>
+                        <Col sm="12">
+                            {/* <TC tcList={this.state.telecommandList}/> */}
+                            <TC task={activeTask}/>
+                        </Col>
+                        </Row>
+                    </TabPane>
+                    <TabPane tabId="rtd">
+                        <Row>
+                        <Col sm="12">
+                            {/* <RTD tmTypes={this.state.rtdTmTypes} tcTypes={this.state.rtdTcTypes}/> */}
+                            <RTD task={activeTask}/>
+                        </Col>
+                        </Row>
+                    </TabPane>
+                </TabContent>
+            </div>
         </div>
-    </div>
-    );
+        );
     }
 }
+export default withRouter(Detail); 

@@ -1,15 +1,13 @@
 import { v4 } from "uuid";
 
-export default class TaskModel{
-    id;
-    satelliteId;
-    satelliteName;
-    isActivated;
-
-    constructor(satelliteId, satelliteName, isActivated){
-        this.id = v4();
-        this.satelliteId = satelliteId;
+export default class TaskModel {
+    constructor(satelliteCode,satelliteName, tmList, tcList, rtdTmType, rtdTcType){
+        this.taskId = v4();
+        this.satelliteCode = satelliteCode;
         this.satelliteName = satelliteName;
-        this.isActivated = isActivated;
+        this.tmList = tmList;
+        this.tcList = tcList;
+        this.rtdTmType = rtdTmType;
+        this.rtdTcType = rtdTcType;
     }
 }

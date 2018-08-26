@@ -15,7 +15,8 @@ const data = {
       pointHoverBackgroundColor: '#EC932F',
       pointHoverBorderColor: '#EC932F',
       yAxisID: 'y-axis-2'
-    },{
+    },
+    {
       type: 'bar',
       label: 'Visitor',
       data: [200, 185, 590, 621, 250, 400, 95],
@@ -86,9 +87,24 @@ const plugins = [{
     }
 }];
 
-export default React.createClass({
-  displayName: 'MixExample',
+// export default React.createClass({
+//   displayName: 'MixExample',
 
+//   render() {
+//     return (
+//       <div>
+//         <h2>Mixed data Example</h2>
+//         <Bar
+//           data={data}
+//           options={options}
+//           plugins={plugins}
+//         />
+//       </div>
+//     );
+//   }
+// });
+
+export default class MixChart extends Component{
   render() {
     return (
       <div>
@@ -101,4 +117,4 @@ export default React.createClass({
       </div>
     );
   }
-});
+}
