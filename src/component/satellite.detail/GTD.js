@@ -101,8 +101,11 @@ export class GTD extends Component {
     }
 
     componentWillUpdate(){
-        if(this.props.isGTDActive === true){ //현재 페이지가 GTD가 아닌 경우 인터벌을 종료한다.
+        console.log("update")
+        if(this.props.isGTDActive === false){ //현재 페이지가 GTD가 아닌 경우 인터벌을 종료한다.
             this._running = false;
+        }else{
+            this._running = true; //다시 GTD 페이지로 돌아온 경우 인터벌을 시작한다.
         }
     }
 
@@ -115,7 +118,6 @@ export class GTD extends Component {
     updateData = () =>{
         let intervalId = setInterval(()=>{
             if(this._running === false){
-                //console.log("clear interval");
                 clearInterval(intervalId);
             }else{
                let orbitData = this.state.orbitDataset.pop();
@@ -130,7 +132,7 @@ export class GTD extends Component {
                     })
                }
                 
-               //console.log(this.state.orbitDataset.pop());
+               console.log(this.state.orbitDataset.pop());
             }
         },1000)
     }

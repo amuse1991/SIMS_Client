@@ -20,7 +20,7 @@ export default class Chart extends Component{
         }
     }
 
-    componentWillMount(){
+    componentDidMount(){
         this.setState({
             config:this.makeConfig()
         });
@@ -41,13 +41,17 @@ export default class Chart extends Component{
             case 'table':
                 let th = [];
                 let td = [];
+                //get th
                 for(let i=0; i<items.length; i++){
                     th.push(items[i].DataName);
                     td.push(items[i].data)
                 }
+                //get number of rows
+                let numOfRows = td[0].length;
                 config = {
                     th:th,
                     data:td,
+                    numOfRows:numOfRows,
                     distinct:true
                 }
                 break;
@@ -97,7 +101,7 @@ export default class Chart extends Component{
             );
         }else if(type === 'table'){
             return(
-                <div><HoverTable data={this.state.config}/></div>
+                <div><HoverTable config={this.state.config}/></div>
             );
         }
         return (
