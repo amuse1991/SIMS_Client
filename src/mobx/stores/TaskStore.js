@@ -64,6 +64,11 @@ class TaskStore {
     addTask(task){
         this.tasks.push(task);
     }
+
+    @action
+    setActiveTaskPage(pageName){ //active task의 페이지를 전환한다. (초기값은 GTD)
+        this.activeTask.currentPage = pageName;
+    }
 }
 
 export const taskStore = new TaskStore();

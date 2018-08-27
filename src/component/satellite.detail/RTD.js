@@ -32,7 +32,7 @@ export class RTD extends Component {
 
     render(){
         socket.on('response_telemetry',(msg)=>{
-            console.log(this)
+            //console.log(this)
             this.changeWOD(JSON.stringify(msg));
          });
         return(

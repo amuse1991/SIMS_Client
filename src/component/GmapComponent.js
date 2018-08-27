@@ -20,20 +20,41 @@ export const GmapComponent = compose(
     withScriptjs,
     withGoogleMap
   )((props) =>{
-    let {Lat,Long,Alt,SatelliteCode} = props.orbitData;
-    return(
+    //다중 위성에 대한 GTD(데이터가 배열로 넘어옴)
+    if(props.isMoreThenOne === true){
+      //TODO 다중 데이터 처리
+      let orbitDataset = props.orbitData;
+      return(
         <GoogleMap
         defaultZoom={2}
         defaultCenter={{ lat: -34.397, lng: 150.644 }}
         >
-          { <OverlayView 
+          {
+            orbitDataset.map((data,i)=>{
+              return(
+                <OverlayView
+                position={{ lat: data.Lat, lng: data.Long }}
+                mapPaneName={OverlayView.OVERLAY_LAYER}
+                getPixelPositionOffset={getPixelPositionOffset}
+                >
+                  <OverlaySatellite
+                    key={i}
+                    satelliteCode={data.SatelliteCode}
+                    lat={data.Lat}
+                    lng={data.Long}
+                    alt={data.Alt}
+                  />
+                </OverlayView>
+              )
+            })
+          }
+          {/* { <OverlayView 
             position={{ lat: Lat, lng: Long }}
-            //position={{ lat: -34.397, lng: 150.644 }}
             mapPaneName={OverlayView.OVERLAY_LAYER}
             getPixelPositionOffset={getPixelPositionOffset}
           >
             <OverlaySatellite 
-              imgSrc={window.location.origin+'/img/ds2.png'}
+              //imgSrc={window.location.origin+'/img/ds2.png'}
               satelliteCode={SatelliteCode}
               lat={Lat}
               lng={Long}
@@ -41,17 +62,39 @@ export const GmapComponent = compose(
             />
           </OverlayView>}
           { <OverlayView 
-            //position={{ lat: Lat, lng: Long }}
             position={{ lat: -35.00, lng: 150.644 }}
             mapPaneName={OverlayView.OVERLAY_LAYER}
             getPixelPositionOffset={getPixelPositionOffset}
           >
             <OverlaySatellite 
-              imgSrc={window.location.origin+'/img/csat.jpg'}
+              //imgSrc={window.location.origin+'/img/csat.jpg'}
               //satelliteCode={SatelliteCode}
               //lat={Lat}
               //lng={Long}
               //alt={Alt}
+            />
+          </OverlayView>} */}
+        </GoogleMap>
+      );
+    }
+    let {Lat,Long,Alt,SatelliteCode} = props.orbitData;
+    //하나의 위성에 대한 GTD
+    return(
+        <GoogleMap
+        defaultZoom={2}
+        defaultCenter={{ lat: -34.397, lng: 150.644 }}
+        >
+          { <OverlayView 
+            position={{ lat: Lat, lng: Long }}
+            mapPaneName={OverlayView.OVERLAY_LAYER}
+            getPixelPositionOffset={getPixelPositionOffset}
+          >
+            <OverlaySatellite 
+              //imgSrc={window.location.origin+'/img/ds2.png'}
+              satelliteCode={SatelliteCode}
+              lat={Lat}
+              lng={Long}
+              alt={Alt}
             />
           </OverlayView>}
         </GoogleMap>

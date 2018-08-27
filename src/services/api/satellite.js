@@ -42,3 +42,7 @@ export function getTCmetaListBySatCode(satelliteCode){
     satelliteCode:satelliteCode
   });
 }
+
+export function getSatCount(){
+  return axios.get(`${serverPath}/satellite/count`);
+}
