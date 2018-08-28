@@ -1,7 +1,7 @@
 import React,{Component} from "react";
-import { Form, FormGroup, Label, Input, Button } from "reactstrap";
+import { Button } from "reactstrap";
 import * as tcApi from "../../services/api/tc";
-import Chart from "../Chart"
+import Chart from "../chart/ChartIndex"
 
 export class TC extends Component {
     constructor(props){
@@ -18,15 +18,17 @@ export class TC extends Component {
 
     fetchData = async (event)=>{
         let {selectedTcCode,startDate,endDate} = this.state;
-        let tcData = await tcApi.getDataForCharting(selectedTcCode,startDate,endDate);
-        await this.setState({
+        let tcData = await tcApi.getData(selectedTcCode,startDate,endDate);
+        let chartTypes = await tcApi.getChartType(selectedTcCode);
+        this.setState({
             tcData:tcData.data,
+            tcChartTypes:chartTypes.data,
             tcDataLoaded:true
         })
     }
 
-    selectTC = async (event)=>{
-        await this.setState({
+    selectTC = (event)=>{
+        this.setState({
             selectedTcCode:event.target.id, //button id == tcCode
             selectedTcName:event.target.name
         });
@@ -44,31 +46,30 @@ export class TC extends Component {
         })
     }
 
-    _extractDataByChartGroup = (data,group)=>{
-        let result = []
-        for(let i=0; i<data.chartData.length; i++){
-            let item = data.chartData[i];
-            if(item.ChartGroup === group){
-                result.push(item);
-            }
-        }
-        return result;
-    }
+    // _extractDataByChartGroup = (data,group)=>{
+    //     let result = []
+    //     for(let i=0; i<data.chartData.length; i++){
+    //         let item = data.chartData[i];
+    //         if(item.ChartGroup === group){
+    //             result.push(item);
+    //         }
+    //     }
+    //     return result;
+    // }
 
-    _getLabelData = (data,label)=>{
-        let result;
-        for(let i=0; i<data.chartData.length; i++){
-            let item = data.chartData[i];
-            if(item.DataName === label){
-                result = item.data;
-            }
-        }
-        return result;
-    }
+    // _getLabelData = (data,label)=>{
+    //     let result;
+    //     for(let i=0; i<data.chartData.length; i++){
+    //         let item = data.chartData[i];
+    //         if(item.DataName === label){
+    //             result = item.data;
+    //         }
+    //     }
+    //     return result;
+    // }
 
     render(){
         const {task} = this.props;
-        const tcData = this.state.tcData;
         if(this.state.tcDataLoaded === false){
             return (
                 <div>
@@ -106,29 +107,9 @@ export class TC extends Component {
                 <hr/>
                 <div>
                    {
-                    tcData.chartGroup.map((group,i)=>{
-                        let items = this._extractDataByChartGroup(tcData,group);
-                        let label = this._getLabelData(tcData,'Time');
-                        return (
-                            <div id={group}>
-                                <h5>{group}</h5>
-                                <Chart key={i} chartItems={items} chartGroup={group} label={label}/>
-                            </div>
-                        );
-                    })
-                   }
-                    {
-                    /* 
-                    //chart sample
-                    <HovTable/>
-                    <hr/>
-                    <BarChart title={'Bar'}/>
-                    <hr/>
-                    <LineChart title={'Line'}/>
-                    <hr/>
-                    <RadarChart title={'Radar'}/>
-                    <hr/>
-                    <HorizontalBarChart title={'Horizontal Bar'}/> */
+                        <div id={'chart'}>
+                            <Chart chartData={this.state.tcData} chartTypes={this.state.tcChartTypes}/>
+                        </div>
                     }
                 </div>
             </div>

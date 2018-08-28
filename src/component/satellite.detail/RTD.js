@@ -15,6 +15,13 @@ export class RTD extends Component {
         }
     }
 
+    componentDidMount(){
+        socket.on('response_telemetry',(msg)=>{
+            //console.log(this)
+            this.changeWOD(JSON.stringify(msg));
+         });
+    }
+
     wsConnect = ()=>{
          console.log('wsConnect called');
          //socket = io(this.state.endpoint);
@@ -31,10 +38,8 @@ export class RTD extends Component {
     }
 
     render(){
-        socket.on('response_telemetry',(msg)=>{
-            //console.log(this)
-            this.changeWOD(JSON.stringify(msg));
-         });
+        //const {task} = this.props;
+
         return(
             <div>
                 <h3>Real Time Data</h3>

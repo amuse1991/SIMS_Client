@@ -2,25 +2,23 @@ import React,{Component} from "react";
 import { Table } from 'reactstrap';
 
 export default class HoverTable extends Component{
-//props: config(th,data,distinct)
-
+//props: config(th,data)
 
     render(){
-        const {config} = this.props;
-        console.log(config);
-        if(config == null){
-            return(<div>loading...</div>)
+        if(this.props.config == null){
+            return(<div>"error"</div>);
         }
+        const {config} = this.props;
         return(
             <Table hover>
             <thead>
-                {config.th.map((th,i)=><th key={i}>{th}</th>)}
+                {config.th.map((th,i)=><th key={th+i}>{th}</th>)}
             </thead>
             <tbody>
                 {config.data.map((data,i)=>
                     <tr key={i}>
                         {
-                            data.map((item,j)=>
+                            Object.values(data).map((item,j)=>
                                 <td key={j}>{item}</td>
                             )
                         }

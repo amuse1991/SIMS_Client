@@ -8,7 +8,7 @@ import HovTable from "../chart/hovTable";
 */
 import { Form, FormGroup, Label, Input, Button } from "reactstrap";
 import * as tmApi from "../../services/api/tm";
-import Chart from "../Chart"
+import Chart from "../chart/ChartIndex"
 //import { getAllOrbitData } from "../../services/api/gtd";
 
 export class TM extends Component {
@@ -28,14 +28,16 @@ export class TM extends Component {
     fetchData = async (event)=>{
         let {selectedTmCode,startDate,endDate} = this.state;
         let tmData = await tmApi.getDataForCharting(selectedTmCode,startDate,endDate);
+        let chartTypes = await tmApi.getChartType(selectedTmCode);
         await this.setState({
             tmData:tmData.data,
+            tmChartTypes:chartTypes.data,
             tmDataLoaded:true
         })
     }
 
-    selectTM = async (event)=>{
-        await this.setState({
+    selectTM = (event)=>{
+        this.setState({
             selectedTmCode:event.target.id, //button id == tmCode
             selectedtmName:event.target.name
         });
@@ -53,31 +55,9 @@ export class TM extends Component {
         })
     }
 
-    _extractDataByChartGroup = (data,group)=>{
-        let result = []
-        for(let i=0; i<data.chartData.length; i++){
-            let item = data.chartData[i];
-            if(item.ChartGroup === group){
-                result.push(item);
-            }
-        }
-        return result;
-    }
-
-    _getLabelData = (data,label)=>{
-        let result;
-        for(let i=0; i<data.chartData.length; i++){
-            let item = data.chartData[i];
-            if(item.DataName === label){
-                result = item.data;
-            }
-        }
-        return result;
-    }
-
     render(){
         const {task} = this.props;
-        const tmData = this.state.tmData;
+        //const tmData = this.state.tmData;
         if(this.state.tmDataLoaded === false){
             return (
                 <div>
@@ -120,7 +100,7 @@ export class TM extends Component {
                 </div>
                 <hr/>
                 <div>
-                   {
+                   {/* {
                     tmData.chartGroup.map((group,i)=>{
                         let items = this._extractDataByChartGroup(tmData,group);
                         let label = this._getLabelData(tmData,'Time');
@@ -131,19 +111,11 @@ export class TM extends Component {
                             </div>
                         );
                     })
-                   }
-                    {
-                    /* 
-                    //chart sample
-                    <HovTable/>
-                    <hr/>
-                    <BarChart title={'Bar'}/>
-                    <hr/>
-                    <LineChart title={'Line'}/>
-                    <hr/>
-                    <RadarChart title={'Radar'}/>
-                    <hr/>
-                    <HorizontalBarChart title={'Horizontal Bar'}/> */
+                   } */}
+                   {
+                        <div id={'chart'}>
+                            <Chart chartData={this.state.tmData} chartTypes={this.state.tmChartTypes}/>
+                        </div>
                     }
                 </div>
             </div>
