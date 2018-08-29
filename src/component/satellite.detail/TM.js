@@ -27,7 +27,7 @@ export class TM extends Component {
 
     fetchData = async (event)=>{
         let {selectedTmCode,startDate,endDate} = this.state;
-        let tmData = await tmApi.getDataForCharting(selectedTmCode,startDate,endDate);
+        let tmData = await tmApi.getData(selectedTmCode,startDate,endDate);
         let chartTypes = await tmApi.getChartType(selectedTmCode);
         await this.setState({
             tmData:tmData.data,

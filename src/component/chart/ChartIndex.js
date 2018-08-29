@@ -103,7 +103,7 @@ export default class ChartIndex extends Component{
         return(
             chartItems.chartGroup.map((group,idx)=>{
                 data[idx] = chartItems.chartData.filter(data=>data.ChartGroup === group)
-                if(data[idx][0].ChartType=="table"){
+                if(data[idx][0].ChartType==="table"){
                     return(
                         <div>
                             <h4>{group}</h4>
@@ -114,7 +114,7 @@ export default class ChartIndex extends Component{
                     return(
                         <div>
                             <h4>{group}</h4>
-                            <Chart data={data[idx]} labes={this.state.labels} isTable={false}/>
+                            <Chart data={data[idx]} labels={this.state.labels} isTable={false}/>
                         </div>
                     )
                 }

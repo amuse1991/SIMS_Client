@@ -11,10 +11,8 @@ const dataColor = [
 export default class Chart extends Component{
     constructor(props){
         super(props)
-        const {data,isTable} = this.props;
-        let type; isTable?type='table':data[0].ChartType;
         this.state={
-            type:type,
+            type:null,
             config:null,
             readyToRender:false
         }
@@ -22,14 +20,18 @@ export default class Chart extends Component{
     }
 
     componentDidMount(){
+        const {data,isTable} = this.props;
+        let type;
+        isTable?type='table':type=data[0].ChartType;
+        let config = this.makeConfig(type);
         this.setState({
-            config:this.makeConfig(),
+            type:type,
+            config:config,
             readyToRender:true
         });
     }
 
-    makeConfig = ()=>{
-        const type = this.state.type;
+    makeConfig = (type)=>{
         const items = this.props.data;
         let config;
         switch(type){
@@ -50,6 +52,8 @@ export default class Chart extends Component{
                 break;
             case 'text':
                 config = {data:items}
+            case 'time':
+                config = null;
             default:
                 config = null;
         }
@@ -57,7 +61,7 @@ export default class Chart extends Component{
     }
 
     _makeLineDatasets = ()=>{
-        const chartItems = this.state.chartItems;
+        const chartItems = this.props.data;
         let datasets = [];
         for(let idx=0;idx<chartItems.length;idx++){
             let item = chartItems[idx];
@@ -94,9 +98,11 @@ export default class Chart extends Component{
             case 'table':
                 return <HoverTable config={this.state.config}/>
             case 'text':
-                return <div>{this.state.config.data}</div>
+                return <div>text</div>
+            case 'time':
+                return <div></div>
             default :
-                return(<div>loading...</div>)
+                return(<div>chart disable</div>)
         }
     }
 }
