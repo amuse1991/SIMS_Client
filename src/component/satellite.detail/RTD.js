@@ -1,54 +1,53 @@
 import React,{Component} from "react";
-import HovTable from "../chart/hovTable";
 import {Button} from 'reactstrap';
 import io from 'socket.io-client';
-import {WOD} from "../realtime_data/WOD";
 import {serverConfig} from '../../configure/app.config'
+import ChartIndex from "../chart/ChartIndex";
 
 export class RTD extends Component {
     constructor(props){
         super(props);
-        this.socket = null;
+        this.TMsocket = null;
+        this.TCsocket = null;
         this.state = {
             wod : 'none',
             fcs : 'none'
         }
     }
 
-    componentDidMount(){
-        this.socket = io(`http://${serverConfig.host}:${serverConfig.RTDBroadcastPort}/waitingSpace`);
-    }
 
     componentWillUnmount(){
-        this.socket.disconnect();
+        //this.socket.disconnect();
     }
 
     wsTmConnect = (tmName)=>{
-         //console.log('wsConnect called');
-         this.socket.emit('requestTelemetry',{id:this.socket.id,type:tmName});
-         this.socket.on('responseTelemetry',(msg)=>{
-            //console.log(this)
-            this.changeWOD(JSON.stringify(msg));
-         });
+        //console.log('wsConnect called');
+        this.TMsocket = io(`http://${serverConfig.host}:${serverConfig.RTDBroadcastPort}/TMnameSpace`);
+        this.TMsocket.emit('requestTelemetry',{type:tmName});
+        this.TMsocket.on(`${tmName}resp`,(msg)=>{
+        console.log(msg);
+        //this.changeWOD(JSON.stringify(msg));
+        });
     }
 
     wsTcConnect = (tcName)=>{
         //console.log('wsConnect called');
-        this.socket.emit('requestTelecommand',{id:this.socket.id,type:tcName});
-        this.socket.on('responseTelecommand',(msg)=>{
-           //console.log(this)
-           this.changeWOD(JSON.stringify(msg));
+        this.TCsocket = io(`http://${serverConfig.host}:${serverConfig.RTDBroadcastPort}/TCnameSpace`);
+        this.TCsocket.emit('requestTelecommand',{type:tcName});
+        this.TCsocket.on(`${tcName}resp`,(msg)=>{
+           console.log(msg);
+           //this.changeWOD(JSON.stringify(msg));
         });
    }
 
     wsTmDisconnect = ()=>{
         console.log('wsDisconnect called');
-        this.socket.disconnect();
+        this.TMsocket.disconnect();
     }
 
     wsTcDisconnect = ()=>{
         console.log('wsDisconnect called');
-        this.socket.disconnect();
+        this.TCsocket.disconnect();
     }
 
     changeWOD = (wodData)=>{
@@ -69,7 +68,7 @@ export class RTD extends Component {
                         <div>
                             <h5>{tmName}   </h5>
                             <Button onClick={()=>this.wsTmConnect(tmName)}>Connect</Button>
-                            <Button onClick={()=>this.wsTmDisconnect(tmName)}>Disconnect</Button>
+                            <Button onClick={()=>this.wsTmDisconnect()}>Disconnect</Button>
                         </div>
                         );
                     })
@@ -85,7 +84,7 @@ export class RTD extends Component {
                         <div>
                             <h5>{tcName}   </h5>
                             <Button onClick={()=>this.wsTcConnect(tcName)}>Connect</Button>
-                            <Button onClick={()=>this.wsTcDisconnect(tcName)}>Disconnect</Button>
+                            <Button onClick={()=>this.wsTcDisconnect()}>Disconnect</Button>
                         </div>
                         );
                     })

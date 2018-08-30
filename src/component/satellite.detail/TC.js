@@ -1,7 +1,7 @@
 import React,{Component} from "react";
 import { Button } from "reactstrap";
 import * as tcApi from "../../services/api/tc";
-import Chart from "../chart/ChartIndex"
+import ChartIndex from "../chart/ChartIndex"
 
 export class TC extends Component {
     constructor(props){
@@ -108,7 +108,7 @@ export class TC extends Component {
                 <div>
                    {
                         <div id={'chart'}>
-                            <Chart chartData={this.state.tcData} chartTypes={this.state.tcChartTypes}/>
+                            <ChartIndex chartData={this.state.tcData} chartTypes={this.state.tcChartTypes}/>
                         </div>
                     }
                 </div>

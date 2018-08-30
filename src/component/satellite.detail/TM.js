@@ -8,7 +8,7 @@ import HovTable from "../chart/hovTable";
 */
 import { Form, FormGroup, Label, Input, Button } from "reactstrap";
 import * as tmApi from "../../services/api/tm";
-import Chart from "../chart/ChartIndex"
+import ChartIndex from "../chart/ChartIndex"
 //import { getAllOrbitData } from "../../services/api/gtd";
 
 export class TM extends Component {
@@ -114,7 +114,7 @@ export class TM extends Component {
                    } */}
                    {
                         <div id={'chart'}>
-                            <Chart chartData={this.state.tmData} chartTypes={this.state.tmChartTypes}/>
+                            <ChartIndex chartData={this.state.tmData} chartTypes={this.state.tmChartTypes}/>
                         </div>
                     }
                 </div>
