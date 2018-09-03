@@ -18,7 +18,7 @@ export class TM extends Component {
         this.state ={
             tmData:null,
             selectedTmCode:null,
-            selectedtmName:null,
+            selectedTmName:null,
             startDate:null,
             endDate:null,
             tmDataLoaded:false
@@ -39,7 +39,7 @@ export class TM extends Component {
     selectTM = (event)=>{
         this.setState({
             selectedTmCode:event.target.id, //button id == tmCode
-            selectedtmName:event.target.name
+            selectedTmName:event.target.name
         });
     }
 
@@ -63,7 +63,7 @@ export class TM extends Component {
                 <div>
                     <h3>Telematry Data</h3>
                     <hr/>
-                    <h4>Telematry Type : {this.state.selectedtmName}</h4>
+                    <h4>Telematry Type : {this.state.selectedTmName}</h4>
                     {task.tmList.map((tm)=>
                     <Button id={tm.TelemetryCode} name={tm.TelemetryName} onClick={this.selectTM} active={this.state.selectedTM === tm.TelemetryCode}>
                         {tm.TelemetryName}</Button>)}

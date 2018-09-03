@@ -9,7 +9,7 @@ export class TC extends Component {
         this.state ={
             tcData:null,
             selectedTcCode:null,
-            selectedtcName:null,
+            selectedTcName:null,
             startDate:null,
             endDate:null,
             tcDataLoaded:false
@@ -46,28 +46,6 @@ export class TC extends Component {
         })
     }
 
-    // _extractDataByChartGroup = (data,group)=>{
-    //     let result = []
-    //     for(let i=0; i<data.chartData.length; i++){
-    //         let item = data.chartData[i];
-    //         if(item.ChartGroup === group){
-    //             result.push(item);
-    //         }
-    //     }
-    //     return result;
-    // }
-
-    // _getLabelData = (data,label)=>{
-    //     let result;
-    //     for(let i=0; i<data.chartData.length; i++){
-    //         let item = data.chartData[i];
-    //         if(item.DataName === label){
-    //             result = item.data;
-    //         }
-    //     }
-    //     return result;
-    // }
-
     render(){
         const {task} = this.props;
         if(this.state.tcDataLoaded === false){
@@ -75,18 +53,12 @@ export class TC extends Component {
                 <div>
                     <h3>Telecommand Data</h3>
                     <hr/>
-                    <h4>Telecommand Type : {this.state.selectedtcName}</h4>
+                    <h4>Telecommand Type : {this.state.selectedTcName}</h4>
                     {task.tcList.map((tc)=>
                     <Button id={tc.TelecommandCode} name={tc.TelecommandName} onClick={this.selectTC} active={this.state.selectedTC === tc.TelecommandCode}>
                         {tc.TelecommandName}</Button>)}
                     <hr/>
                     <div>
-                        {/* <Form>
-                            <FormGroup>
-                                <Label for="startDate">시작일<Input type="date" name="startDate" id="startDate" onChange={this.setStartDate} /></Label>
-                                <Label for="endDate">종료일<Input type="date" name="endDate" id="endDate" onChange={this.setEndDate}/></Label>
-                            </FormGroup>
-                        </Form> */}
                         <Button onClick={this.fetchData}>검색</Button>
                     </div>
                 </div>

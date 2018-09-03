@@ -20,12 +20,10 @@ export default class Chart extends Component{
     }
 
     componentDidMount(){
-        const {data,isTable} = this.props;
-        let type;
-        isTable?type='table':type=data[0].ChartType;
-        let config = this.makeConfig(type);
+        const {data} = this.props;
+        let config = this.makeConfig(data.type);
         this.setState({
-            type:type,
+            type:data.type,
             config:config,
             readyToRender:true
         });
@@ -45,7 +43,6 @@ export default class Chart extends Component{
             break;
             case 'table':
                 config = {
-                    th: Object.keys(items[0]),
                     data:items,
                     distinct:true
                 }
@@ -62,11 +59,12 @@ export default class Chart extends Component{
 
     _makeLineDatasets = ()=>{
         const chartItems = this.props.data;
-        let datasets = [];
-        for(let idx=0;idx<chartItems.length;idx++){
-            let item = chartItems[idx];
-            let dataset = {
-                label: item.DataName,
+        const dataset = chartItems.dataset;
+        let resConfig = [];
+        for(let idx=0;idx<dataset.length;idx++){
+            let item = dataset[idx];
+            let config = {
+                label: item.dataName,
                 fill: false,
                 lineTension: 0.1,
                 backgroundColor: dataColor[idx],
@@ -86,9 +84,9 @@ export default class Chart extends Component{
                 pointHitRadius: 10,
                 data: item.data
             }
-            datasets.push(dataset);
+            resConfig.push(config);
         }
-        return datasets;
+        return resConfig;
     }
 
     render(){

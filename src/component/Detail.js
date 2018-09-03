@@ -2,7 +2,8 @@ import React,{Component} from 'react';
 import {TabContent, TabPane, Nav, NavItem, NavLink, Row, Col} from 'reactstrap';
 import classnames from 'classnames';
 import {GTD} from "./satellite.detail/GTD";
-import {RTD} from "./satellite.detail/RTD";
+import {RTD_TM} from "./satellite.detail/RTD_TM";
+import {RTD_TC} from "./satellite.detail/RTD_TC";
 import {TC} from "./satellite.detail/TC";
 import {TM} from "./satellite.detail/TM";
 import { withRouter } from 'react-router-dom';
@@ -53,7 +54,7 @@ class Detail extends Component{
     }
     
     render(){
-        console.log('render');
+        //console.log('render');
         let activeTask = taskStore.activeTask;
         return (
         <div>
@@ -86,10 +87,18 @@ class Detail extends Component{
                     </NavItem>
                     <NavItem>
                         <NavLink
-                        className={classnames({ active: this.state.activeTab === 'RTD' })}
-                        onClick={() => { this.toggle('RTD'); }}
+                        className={classnames({ active: this.state.activeTab === 'RTD_TM' })}
+                        onClick={() => { this.toggle('RTD_TM'); }}
                         >
-                        Real Time Data
+                        Real Time Telemetry
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink
+                        className={classnames({ active: this.state.activeTab === 'RTD_TC' })}
+                        onClick={() => { this.toggle('RTD_TC'); }}
+                        >
+                        Real Time Telecommand
                         </NavLink>
                     </NavItem>
                 </Nav>
@@ -118,11 +127,19 @@ class Detail extends Component{
                         </Col>
                         </Row>
                     </TabPane>
-                    <TabPane tabId="RTD">
+                    <TabPane tabId="RTD_TM">
                         <Row>
                         <Col sm="12">
                             {/* <RTD tmTypes={this.state.rtdTmTypes} tcTypes={this.state.rtdTcTypes}/> */}
-                            <RTD task={activeTask}/>
+                            <RTD_TM task={activeTask}/>
+                        </Col>
+                        </Row>
+                    </TabPane>
+                    <TabPane tabId="RTD_TC">
+                        <Row>
+                        <Col sm="12">
+                            {/* <RTD tmTypes={this.state.rtdTmTypes} tcTypes={this.state.rtdTcTypes}/> */}
+                            <RTD_TC task={activeTask}/>
                         </Col>
                         </Row>
                     </TabPane>

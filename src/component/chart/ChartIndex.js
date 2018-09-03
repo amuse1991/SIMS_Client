@@ -10,19 +10,15 @@ export default class ChartIndex extends Component{
         this.state = {
             chartItems:null,
             labels:null,
-            readyToRender:false
+            readyToRender:false,
+            chartGroup:null
         }
     }
 
     componentDidMount(){
         const {chartData, chartTypes} = this.props;
         let chartItems = this._makeChartData(chartData,chartTypes);
-        // let chartGroup=[];
-        // for(let i=0; i<chartItems.chartGroup.length; i++){
-        //     let group = chartItems.chartGroup[i];
-        //     chartGroup.push(this._extractDataByChartGroup(chartItems,group));
-        // }
-        let labels = this._getLabelData(chartItems,'Time');
+        let labels = this._getLabelData(chartItems);
         
         this.setState({
             chartItems:chartItems,
@@ -31,22 +27,41 @@ export default class ChartIndex extends Component{
         });
     }
     
-    _makeChartData = (data,chartTypes) => {
-        let res = {chartGroup:[], chartData:[]};
-        chartTypes.sort((a,b)=>{
-            let groupA = a.ChartGroup.toUpperCase();
-            let groupB = b.ChartGroup.toUpperCase();
-            if (groupA < groupB) {
-                return 1;
+    // [{group:string, type:stirng, data:[{dataName:string, data:{}}]}] 형태로 만듬
+    _makeChartData = (dataset,chartTypes) => {
+        let chartGroups = this._getChartGroup(chartTypes);
+        let result = [];
+        for(let i=0; i<chartGroups.length; i++){
+            let group = chartGroups[i];
+            //chartTypes객체에서 그룹에 해당하는 것들을 추려냄
+            let groupDataTypes = chartTypes.filter((typeInfo)=>{
+                return typeInfo.ChartGroup === group;
+            })
+            //type정보의 DataName 필드를 이용해 해당하는 정보를 찾아냄
+            let resultDataset=[];
+            for(let j=0; j<groupDataTypes.length; j++){
+                // let selectedData = dataset.filter((data)=>{
+                //     return Object.keys(data) === data
+                // });
+                let dataName = groupDataTypes[j]['DataName'];
+                let dataObj = {dataName:dataName, data:null}
+                //let selectedData = []
+                let data = dataset.map((item)=>{
+                    return item[dataName]
+                });
+                dataObj.data = data;
+                resultDataset.push(dataObj);
             }
-            if (groupA > groupB) {
-                return -1;
-            }
-            //같을 경우
-            return 0;
-        })
+            //그룹의 type을 검색
+            let type = this._getGroupChartType(group,chartTypes);
+            result.push({group:group,type:type,dataset:resultDataset});
+        }
+        return result;
+    }
 
+    _getChartGroup = (chartTypes)=>{
         //차트그룹 생성
+        let chartGroup = [];
         let currentGroup;
         for(let i=0; i<chartTypes.length; i++){
             let item = chartTypes[i];
@@ -54,44 +69,29 @@ export default class ChartIndex extends Component{
                 continue;
             }
             else{
-                res.chartGroup.push(item.ChartGroup);
+                chartGroup.push(item.ChartGroup);
                 currentGroup = item.ChartGroup;
             }
         }
-        //차트 데이터 생성
-        for(let i=0; i<chartTypes.length; i++){
-            let item = chartTypes[i];
-            let chartData = [];
-            let name = item.DataName;
-            for(let j=0; j<data.length;j++){
-                chartData.push(data[j][name]);
-            }
-            item.data = chartData;
-            res.chartData.push(item);
-        }
-        return res;
+        return chartGroup;
     }
 
-    // _extractDataByChartGroup = (data,group)=>{
-    //     let result = []
-    //     for(let i=0; i<data.chartData.length; i++){
-    //         let item = data.chartData[i];
-    //         if(item.ChartGroup === group){
-    //             result.push(item);
-    //         }
-    //     }
-    //     return result;
-    // }
+    _getGroupChartType = (group,chartTypes)=>{
+        let type =chartTypes.find((typeInfo)=>{
+            return typeInfo.ChartGroup === group;
+        });
 
-    _getLabelData = (data,label)=>{
-        let result;
-        for(let i=0; i<data.chartData.length; i++){
-            let item = data.chartData[i];
-            if(item.DataName === label){
-                result = item.data;
-            }
+        return type.ChartType;
+    }
+
+    _getLabelData = (dataset)=>{
+        let labelData = dataset.find((data)=>{
+            return data.group === 'label'
+        })
+        if(labelData == undefined){
+            return null;
         }
-        return result;
+        return labelData.dataset[0].data;
     }
 
     render(){
@@ -99,25 +99,45 @@ export default class ChartIndex extends Component{
         if(this.state.readyToRender === false) return(<div>loading..</div>);
         //데이터 수신 완료된 경우
         let chartItems = this.state.chartItems;
-        let data=[];
+        //let data=[];
         return(
-            chartItems.chartGroup.map((group,idx)=>{
-                data[idx] = chartItems.chartData.filter(data=>data.ChartGroup === group)
-                if(data[idx][0].ChartType==="table"){
-                    return(
-                        <div>
-                            <h4>{group}</h4>
-                            <Chart data={this.props.chartData} labes={this.state.labels} isTable={true}/>
-                        </div>
-                    )
-                }else{
-                    return(
-                        <div>
-                            <h4>{group}</h4>
-                            <Chart data={data[idx]} labels={this.state.labels} isTable={false}/>
-                        </div>
-                    )
+            chartItems.map((chartItem,idx)=>{
+                //data[idx] = chartItems.chartData.filter(data=>data.ChartGroup === group)
+                switch(chartItem.type){
+                    case 'table' :
+                        return(
+                            <div>
+                                <h4>{chartItem.group}</h4>
+                                {/* <Chart data={this.props.chartData} labes={this.state.labels} isTable={true}/> */}
+                                <Chart data={chartItem} labels={this.state.labels}/>
+                            </div>
+                        )
+                    case 'line' :
+                        return(
+                            <div>
+                                <h4>{chartItem.group}</h4>
+                                <Chart data={chartItem} labels={this.state.labels}/>
+                            </div>
+                        )
+                    default : 
+                        return <div></div>
                 }
+                // if(chartItem.type==="table"){
+                //     return(
+                //         <div>
+                //             <h4>{chartItem.group}</h4>
+                //             {/* <Chart data={this.props.chartData} labes={this.state.labels} isTable={true}/> */}
+                //             <chart data={chartItem}/>
+                //         </div>
+                //     )
+                // }else{
+                //     return(
+                //         <div>
+                //             <h4>{group}</h4>
+                //             <Chart data={data[idx]} labels={this.state.labels} isTable={false}/>
+                //         </div>
+                //     )
+                // }
             })
         )
     }
