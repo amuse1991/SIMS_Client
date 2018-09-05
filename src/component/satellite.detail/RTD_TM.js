@@ -38,7 +38,6 @@ export class RTD_TM extends Component {
         this.TMsocket.emit('requestTelemetry',{type:tmName});
         let chartTypes = await tmApi.getChartType(this.state.selectedTmCode);
         this.TMsocket.on(`${tmName}resp`,(msg)=>{
-            console.log(msg);
             this.setChartData(msg,chartTypes);
         });
     }
@@ -49,7 +48,8 @@ export class RTD_TM extends Component {
     }
 
     setChartData = async (tmData,chartTypes)=>{
-        this.setState({data:tmData,tmChartTypes:chartTypes,chartDataReady:true});
+        await this.setState({data:tmData,tmChartTypes:chartTypes,chartDataReady:true});
+        console.log(tmData);
     }
 
     render(){
@@ -70,7 +70,7 @@ export class RTD_TM extends Component {
                     </div>
                     <hr/>
                     <div>
-                        <ChartIndex chartData={this.state.tmData} chartTypes={this.state.tmChartTypes}/>
+                        <ChartIndex chartData={this.state.data} chartTypes={this.state.tmChartTypes.data} isRTD={true}/>
                         {/* <RTDChart chartData={this.state.data} chartTypes={this.state.tmChartTypes}/> */}
                     </div>
                 </div>

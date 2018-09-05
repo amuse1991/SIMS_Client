@@ -1,9 +1,10 @@
 import React,{Component} from 'react';
 import Chart from './Chart';
+import RTDChart from "./RTDChart";
 
 
 export default class ChartIndex extends Component{
-    //props:chartData, chartTypes
+    //props:chartData, chartTypes, isRTD
     constructor(props)
     {   
         super(props);
@@ -11,20 +12,39 @@ export default class ChartIndex extends Component{
             chartItems:null,
             labels:null,
             readyToRender:false,
-            chartGroup:null
+            chartGroup:null,
+            RTDItem:null
         }
     }
 
     componentDidMount(){
-        const {chartData, chartTypes} = this.props;
-        let chartItems = this._makeChartData(chartData,chartTypes);
-        let labels = this._getLabelData(chartItems);
-        
-        this.setState({
-            chartItems:chartItems,
-            labels:labels,
-            readyToRender:true
-        });
+        const {chartData, chartTypes, isRTD} = this.props;
+        /*componentDidmount때 RTD는 데이터가 undifined이다(아직 connect 안했으므로)
+        따라서 RTD가 아닐때만 componentDidmount에서 데이터 처리 작업을 한다.
+        */
+        if(isRTD === false){ 
+            let chartItems = this._makeChartData(chartData,chartTypes);
+            let labels = this._getLabelData(chartItems);
+            this.setState({
+                chartItems:chartItems,
+                labels:labels,
+                readyToRender:true
+            });
+        }
+    }
+
+    
+    componentWillReceiveProps(nextProps){
+        //RTD 데이터 처리를 위함
+        if(nextProps.isRTD === true && this.props.chartData !== undefined){
+            let RTDItem = this._makeChartData(nextProps.chartData,this.props.chartTypes);
+            let label = this._getLabelData(RTDItem);
+            this.setState({
+                RTDItem:RTDItem,
+                labels:label,
+                readyToRender:true
+            })
+        }
     }
     
     // [{group:string, type:stirng, data:[{dataName:string, data:{}}]}] 형태로 만듬
@@ -46,9 +66,14 @@ export default class ChartIndex extends Component{
                 let dataName = groupDataTypes[j]['DataName'];
                 let dataObj = {dataName:dataName, data:null}
                 //let selectedData = []
-                let data = dataset.map((item)=>{
-                    return item[dataName]
-                });
+                let data 
+                if(this.props.isRTD === true){ //RTD(single data)인 경우
+                    data = dataset[dataName];
+                }else{ //archived data(batch data)인 경우
+                    data = dataset.map((item)=>{
+                        return item[dataName]
+                    });
+                }
                 dataObj.data = data;
                 resultDataset.push(dataObj);
             }
@@ -96,48 +121,36 @@ export default class ChartIndex extends Component{
 
     render(){
         //데이터 아직 받아오지 않은 경우
-        if(this.state.readyToRender === false) return(<div>loading..</div>);
-        //데이터 수신 완료된 경우
+        if(this.state.readyToRender === false){
+            if(this.props.isRTD === true) return(<div></div>);
+            else return(<div>loading..</div>);
+        }
+        //RTD(single data)가 수신된 경우
+        if(this.state.readyToRender === true && this.props.isRTD === true){
+            return <RTDChart data={this.state.RTDItem} label={this.state.labels}/>
+        }
+        //archived data(batch data)가 수신된 경우
         let chartItems = this.state.chartItems;
-        //let data=[];
         return(
             chartItems.map((chartItem,idx)=>{
-                //data[idx] = chartItems.chartData.filter(data=>data.ChartGroup === group)
                 switch(chartItem.type){
                     case 'table' :
                         return(
                             <div>
                                 <h4>{chartItem.group}</h4>
-                                {/* <Chart data={this.props.chartData} labes={this.state.labels} isTable={true}/> */}
-                                <Chart data={chartItem} labels={this.state.labels}/>
+                                <Chart key={idx} data={chartItem} labels={this.state.labels}/>
                             </div>
                         )
                     case 'line' :
                         return(
                             <div>
                                 <h4>{chartItem.group}</h4>
-                                <Chart data={chartItem} labels={this.state.labels}/>
+                                <Chart key={idx} data={chartItem} labels={this.state.labels}/>
                             </div>
                         )
                     default : 
                         return <div></div>
                 }
-                // if(chartItem.type==="table"){
-                //     return(
-                //         <div>
-                //             <h4>{chartItem.group}</h4>
-                //             {/* <Chart data={this.props.chartData} labes={this.state.labels} isTable={true}/> */}
-                //             <chart data={chartItem}/>
-                //         </div>
-                //     )
-                // }else{
-                //     return(
-                //         <div>
-                //             <h4>{group}</h4>
-                //             <Chart data={data[idx]} labels={this.state.labels} isTable={false}/>
-                //         </div>
-                //     )
-                // }
             })
         )
     }

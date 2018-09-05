@@ -114,7 +114,7 @@ export class TM extends Component {
                    } */}
                    {
                         <div id={'chart'}>
-                            <ChartIndex chartData={this.state.tmData} chartTypes={this.state.tmChartTypes}/>
+                            <ChartIndex chartData={this.state.tmData} chartTypes={this.state.tmChartTypes} isRTD={false}/>
                         </div>
                     }
                 </div>

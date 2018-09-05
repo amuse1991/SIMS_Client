@@ -80,7 +80,7 @@ export class TC extends Component {
                 <div>
                    {
                         <div id={'chart'}>
-                            <ChartIndex chartData={this.state.tcData} chartTypes={this.state.tcChartTypes}/>
+                            <ChartIndex chartData={this.state.tcData} chartTypes={this.state.tcChartTypes} isRTD={false}/>
                         </div>
                     }
                 </div>

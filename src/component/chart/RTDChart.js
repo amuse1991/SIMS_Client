@@ -1,88 +1,101 @@
 import React,{Component} from 'react';
-import {Line} from 'react-chartjs-2';
-import HoverTable from './HoverTable';
+import Chart from "./Chart";
 
-const dataColor = [
-    'rgba(102, 0, 102,1)',
-    'rgba(255,0,102,1)',
-    'rgba(0,204,102,1)',
-    'rgba(128, 159, 255,1)'
-]
 export default class RTDChart extends Component{
     //props : chartData, chartTypes
     constructor(props){
         super(props);
         this.state ={
-            chartGroups:[],
-            datasets:[]
+            chartItems:null, //[{group:string, type:stirng, data:[{dataName:string, data:{}}]}]
+            isLoaded:false
         }
+    }
+
+    
+    _checkGroupExisit = ()=>{
+        return this.state.chartItems!==null?true:false;
+    }
+
+    _makeGroup = async (data)=>{
+        await this.setState({
+            chartItems:data,
+            isLoaded:true
+        });
+    }
+
+    _addDataToGroup = async (data)=>{
+        const chartItems = this.state.chartItems;
+        let isNewData = true;
+        chartItems.map(group=>{
+            let selectedData = data.find(item=>{
+                return item.group === group.group;
+            })
+            //데이터 중복 검사
+            if(group.dataset.find(i=>i.data===selectedData.dataset[0].data)!==undefined){
+                isNewData = false;
+            }
+            if(isNewData){
+                group.dataset = group.dataset.concat(selectedData.dataset);
+            }
+        })
+        if(isNewData){
+            await this.setState({
+                chartItems:chartItems,
+                isLoaded:true
+            })
+        }
+        console.log(this.state);
     }
 
     componentDidMount(){
-        
-        
-    }
-
-    shouldComponentUpdate(){
-        let data = this._joinData();
-    }
-
-    _initChart = ()=>{
-        let chartGroups = this._getChartGroup(); //차트 그룹 추출
-    }
-
-    //데이터를 표시할 수 있도록 타입과 데이터를 조인한다.
-    _joinData = ()=>{
-        let chartData = this.props.chartData;
-        let chartTypes = this.props.chartTypes.data;
-        
-        //join 시키는 작업
-        let result = chartTypes.map((chartType)=>{
-            let dataName = chartType.DataName;
-            return chartType.data = chartData[dataName];
-        })
-        return result;
-    }
-
-    _getChartGroup = ()=>{
-        let chartGroups = this.props.chartTypes.data.filter(typeData=>{
-            let group = typeData.ChartGroup;
-            return this.state.chartGroups.find(group) == undefined
-        })
-        return chartGroups;
-    }
-
-    makeConfig = (type)=>{
-        const items = this.props.data;
-        let config;
-        switch(type){
-            case 'line':
-            let dataset = this._makeLineDatasets()
-            config = {
-                type:this.state.types,
-                labels: this.props.labels,//time
-                datasets: dataset
-            }
-            break;
-            case 'table':
-                config = {
-                    th: Object.keys(items[0]),
-                    data:items,
-                    distinct:true
-                }
-                break;
-            case 'text':
-                config = {data:items}
-            case 'time':
-                config = null;
-            default:
-                config = null;
+        console.log(this.props);
+        const data = this.props.data
+        let isGroupExisit = this._checkGroupExisit(data);
+        if(isGroupExisit === false){
+            this._makeGroup(data);
+        }else{
+            this._addDataToGroup(data);
         }
-        return config;
     }
+
+    componentWillReceiveProps(nextProps){
+        const data = nextProps.data
+        let isGroupExisit = this._checkGroupExisit(data);
+        if(isGroupExisit === false){
+            this._makeGroup(data);
+        }else{
+            this._addDataToGroup(data);
+       }
+    }
+
 
     render(){
-        return(<div>{this.props.chartData}</div>);
+        if(this.state.isLoaded === false){
+            return(<div></div>)
+        }
+        let chartItems = this.state.chartItems;
+        return(
+            chartItems.map((chartItem,idx)=>{
+                switch(chartItem.type){
+                    case 'table' :
+                        return(
+                            <div>
+                                <h4>{chartItem.group}</h4>
+                                <Chart key={idx} data={chartItem} labels={this.state.labels}/>
+                            </div>
+                        )
+                    case 'line' :
+                        return(
+                            <div>
+                                <h4>{chartItem.group}</h4>
+                                <Chart key={idx} data={chartItem} labels={this.state.labels}/>
+                            </div>
+                        )
+                    default : 
+                        return <div></div>
+                }
+            })
+        )
     }
 
 }

@@ -9,6 +9,7 @@ const dataColor = [
     'rgba(128, 159, 255,1)'
 ]
 export default class Chart extends Component{
+    //props : data:Object, labels:[]
     constructor(props){
         super(props)
         this.state={
@@ -94,7 +95,8 @@ export default class Chart extends Component{
             case 'line':
                 return <Line data={this.state.config}/>
             case 'table':
-                return <HoverTable config={this.state.config}/>
+                return(<div></div>)
+                //return <HoverTable config={this.state.config}/>
             case 'text':
                 return <div>text</div>
             case 'time':
