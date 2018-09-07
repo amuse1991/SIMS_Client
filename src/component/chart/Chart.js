@@ -123,8 +123,8 @@ export default class Chart extends Component{
                 //return(<div></div>)
                 return <Line data={this.state.config}/>
             case 'table':
-                return(<div></div>)
-                //return <HoverTable config={this.state.config}/>
+                //return(<div></div>)
+                return <HoverTable config={this.state.config}/>
             case 'text':
                 return <div>text</div>
             case 'time':
