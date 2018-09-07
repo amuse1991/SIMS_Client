@@ -17,12 +17,11 @@ export default class Chart extends Component{
             config:null,
             readyToRender:false
         }
-        console.log(this.props)
     }
 
     componentDidMount(){
         const {data} = this.props;
-        let config = this.makeConfig(data.type);
+        let config = this._makeConfig(data.type);
         this.setState({
             type:data.type,
             config:config,
@@ -30,7 +29,17 @@ export default class Chart extends Component{
         });
     }
 
-    makeConfig = (type)=>{
+    componentWillReceiveProps(nextProps){
+        const {data} = this.props;
+        let config = this._makeConfig(data.type);
+        this.setState({
+            type:data.type,
+            config:config,
+            readyToRender:true
+        });
+    }
+
+    _makeConfig = (type)=>{
         const items = this.props.data;
         let config;
         switch(type){
@@ -58,9 +67,26 @@ export default class Chart extends Component{
         return config;
     }
 
+    
+    // _addConfigData = (data,labels)=>{
+    //     let type = data.type;
+    //     let currentConfig = this.state.config;
+    //     switch(type){
+    //         case 'line':
+    //             currentConfig.labels = labels;
+    //             currentConfig.datasets.map(data=>{
+
+    //             })
+    //             break;
+    //         default : 
+    //             break;
+    //     }
+    // }
+
     _makeLineDatasets = ()=>{
         const chartItems = this.props.data;
         const dataset = chartItems.dataset;
+        let data = [];
         let resConfig = [];
         for(let idx=0;idx<dataset.length;idx++){
             let item = dataset[idx];
@@ -83,16 +109,18 @@ export default class Chart extends Component{
                 pointHoverBorderWidth: 2,
                 pointRadius: 1,
                 pointHitRadius: 10,
-                data: item.data
+                data: data.concat(item.data)
             }
             resConfig.push(config);
         }
         return resConfig;
     }
 
+
     render(){
         switch(this.state.type){
             case 'line':
+                //return(<div></div>)
                 return <Line data={this.state.config}/>
             case 'table':
                 return(<div></div>)

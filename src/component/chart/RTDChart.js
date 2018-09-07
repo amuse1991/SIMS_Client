@@ -6,44 +6,53 @@ export default class RTDChart extends Component{
     constructor(props){
         super(props);
         this.state ={
-            chartItems:null, //[{group:string, type:stirng, data:[{dataName:string, data:{}}]}]
-            isLoaded:false
+            chartItems:[], //[{group:string, type:stirng, data:[{dataName:string, data:{}}]}]
+            isLoaded:false,
+            labels:[]
         }
     }
 
     
     _checkGroupExisit = ()=>{
-        return this.state.chartItems!==null?true:false;
+        return this.state.chartItems.length!==0?true:false;
     }
 
     _makeGroup = async (data)=>{
         await this.setState({
-            chartItems:data,
-            isLoaded:true
+            chartItems:this.state.chartItems.concat(data),
+            isLoaded:true,
+            labels:this.state.labels.concat(this.props.label) //[...this.state.labels,this.props.label]
         });
     }
 
     _addDataToGroup = async (data)=>{
         const chartItems = this.state.chartItems;
-        let isNewData = true;
+        //let isNewData = true;
         chartItems.map(group=>{
             let selectedData = data.find(item=>{
                 return item.group === group.group;
             })
             //데이터 중복 검사
-            if(group.dataset.find(i=>i.data===selectedData.dataset[0].data)!==undefined){
-                isNewData = false;
-            }
-            if(isNewData){
-                group.dataset = group.dataset.concat(selectedData.dataset);
-            }
+            // if(group.dataset.find(i=>i.data===selectedData.dataset[0].data)!==undefined){
+            //     isNewData = false;
+            // }
+            // if(isNewData){
+            //     group.dataset = group.dataset.concat(selectedData.dataset);
+            // }
+            group.dataset[0].data = group.dataset[0].data.concat(selectedData.dataset[0].data);
         })
-        if(isNewData){
-            await this.setState({
-                chartItems:chartItems,
-                isLoaded:true
-            })
-        }
+        // if(isNewData){
+        //     await this.setState(prevState=>({
+        //         chartItems:chartItems,
+        //         isLoaded:true,
+        //         labels:[...prevState.labels, this.props.label]//[...this.state.labels,this.props.label]
+        //     }))
+        // }
+        await this.setState(prevState=>({
+            chartItems:chartItems,
+            isLoaded:true,
+            labels:[...prevState.labels, this.props.label]//[...this.state.labels,this.props.label]
+        }))
         console.log(this.state);
     }
 

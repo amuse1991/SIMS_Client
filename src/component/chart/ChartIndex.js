@@ -66,9 +66,9 @@ export default class ChartIndex extends Component{
                 let dataName = groupDataTypes[j]['DataName'];
                 let dataObj = {dataName:dataName, data:null}
                 //let selectedData = []
-                let data 
+                let data = []
                 if(this.props.isRTD === true){ //RTD(single data)인 경우
-                    data = dataset[dataName];
+                    data.push(dataset[dataName]);
                 }else{ //archived data(batch data)인 경우
                     data = dataset.map((item)=>{
                         return item[dataName]
