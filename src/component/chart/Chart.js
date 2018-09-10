@@ -67,22 +67,6 @@ export default class Chart extends Component{
         return config;
     }
 
-    
-    // _addConfigData = (data,labels)=>{
-    //     let type = data.type;
-    //     let currentConfig = this.state.config;
-    //     switch(type){
-    //         case 'line':
-    //             currentConfig.labels = labels;
-    //             currentConfig.datasets.map(data=>{
-
-    //             })
-    //             break;
-    //         default : 
-    //             break;
-    //     }
-    // }
-
     _makeLineDatasets = ()=>{
         const chartItems = this.props.data;
         const dataset = chartItems.dataset;
@@ -91,6 +75,7 @@ export default class Chart extends Component{
         for(let idx=0;idx<dataset.length;idx++){
             let item = dataset[idx];
             let config = {
+                type:'line',
                 label: item.dataName,
                 fill: false,
                 lineTension: 0.1,
@@ -120,10 +105,8 @@ export default class Chart extends Component{
     render(){
         switch(this.state.type){
             case 'line':
-                //return(<div></div>)
                 return <Line data={this.state.config}/>
             case 'table':
-                //return(<div></div>)
                 return <HoverTable config={this.state.config}/>
             case 'text':
                 return <div>text</div>

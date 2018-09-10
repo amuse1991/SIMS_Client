@@ -60,12 +60,9 @@ export default class ChartIndex extends Component{
             //type정보의 DataName 필드를 이용해 해당하는 정보를 찾아냄
             let resultDataset=[];
             for(let j=0; j<groupDataTypes.length; j++){
-                // let selectedData = dataset.filter((data)=>{
-                //     return Object.keys(data) === data
-                // });
                 let dataName = groupDataTypes[j]['DataName'];
-                let dataObj = {dataName:dataName, data:null}
-                //let selectedData = []
+                //데이터 객체를 생성
+                let dataObj = {dataName:dataName}
                 let data = []
                 if(this.props.isRTD === true){ //RTD(single data)인 경우
                     data.push(dataset[dataName]);
@@ -87,18 +84,27 @@ export default class ChartIndex extends Component{
     _getChartGroup = (chartTypes)=>{
         //차트그룹 생성
         let chartGroup = [];
-        let currentGroup;
-        for(let i=0; i<chartTypes.length; i++){
-            let item = chartTypes[i];
-            if(item.ChartGroup === currentGroup){
-                continue;
+        chartTypes.map(type=>{
+            //매칭되는 그룹이 있는지 찾는다. 만약 매칭되는 그룹이 있는 경우 중복된 그룹이다.
+            let matchGroup=chartGroup.find(group=>{return type.ChartGroup === group}) 
+            //중복되는 그룹이 없는 경우에만 새로운 그룹을 생성한다.
+            if(matchGroup===undefined){
+                chartGroup.push(type.ChartGroup);
             }
-            else{
-                chartGroup.push(item.ChartGroup);
-                currentGroup = item.ChartGroup;
-            }
-        }
+        })
         return chartGroup;
+        // let currentGroup;
+        // for(let i=0; i<chartTypes.length; i++){
+        //     let item = chartTypes[i];
+        //     if(item.ChartGroup === currentGroup){
+        //         continue;
+        //     }
+        //     else{
+        //         chartGroup.push(item.ChartGroup);
+        //         currentGroup = item.ChartGroup;
+        //     }
+        // }
+        // return chartGroup;
     }
 
     _getGroupChartType = (group,chartTypes)=>{
@@ -118,7 +124,6 @@ export default class ChartIndex extends Component{
         }
         return labelData.dataset[0].data;
     }
-
     render(){
         //데이터 아직 받아오지 않은 경우
         if(this.state.readyToRender === false){

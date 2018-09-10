@@ -100,18 +100,6 @@ export class TM extends Component {
                 </div>
                 <hr/>
                 <div>
-                   {/* {
-                    tmData.chartGroup.map((group,i)=>{
-                        let items = this._extractDataByChartGroup(tmData,group);
-                        let label = this._getLabelData(tmData,'Time');
-                        return (
-                            <div id={group}>
-                                <h5>{group}</h5>
-                                <Chart key={i} chartItems={items} chartGroup={group} label={label}/>
-                            </div>
-                        );
-                    })
-                   } */}
                    {
                         <div id={'chart'}>
                             <ChartIndex chartData={this.state.tmData} chartTypes={this.state.tmChartTypes} isRTD={false}/>

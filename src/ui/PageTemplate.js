@@ -13,7 +13,7 @@ export class PageTemplate extends Component {
                     <Col className = "Menubar"> <Menubar/> </Col>
                 </Row>
                 <Row>
-                    <Col-2 className = "Taskbar"> <Taskbar/> </Col-2>
+                    {/* <Col-2 className = "Taskbar"> <Taskbar/> </Col-2> */}
                     <Col className = "pageArea"> {children} </Col>
                 </Row>
             </Container>

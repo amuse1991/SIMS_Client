@@ -32,22 +32,11 @@ export default class RTDChart extends Component{
             let selectedData = data.find(item=>{
                 return item.group === group.group;
             })
-            //데이터 중복 검사
-            // if(group.dataset.find(i=>i.data===selectedData.dataset[0].data)!==undefined){
-            //     isNewData = false;
-            // }
-            // if(isNewData){
-            //     group.dataset = group.dataset.concat(selectedData.dataset);
-            // }
-            group.dataset[0].data = group.dataset[0].data.concat(selectedData.dataset[0].data);
+            //group.dataset[0].data = group.dataset[0].data.concat(selectedData.dataset[0].data);
+            for(let i=0; i<group.dataset.length; i++){
+                group.dataset[i].data = group.dataset[i].data.concat(selectedData.dataset[i].data);
+            }
         })
-        // if(isNewData){
-        //     await this.setState(prevState=>({
-        //         chartItems:chartItems,
-        //         isLoaded:true,
-        //         labels:[...prevState.labels, this.props.label]//[...this.state.labels,this.props.label]
-        //     }))
-        // }
         await this.setState(prevState=>({
             chartItems:chartItems,
             isLoaded:true,
