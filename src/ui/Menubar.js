@@ -35,17 +35,30 @@ export default class Menubar extends Component {
                 <NavbarToggler onClick={this.toggle} />
                 <Collapse isOpen={this.state.isOpen} navbar>
                   <Nav className="ml-auto" navbar>
-                    <NavItem>
-                      <Link to="/help"><NavLink>HELP</NavLink></Link>
+                    <NavItem> 
+                      <Link to="/dashboard"><NavLink>Dashboard</NavLink></Link>
                     </NavItem>
+                    <UncontrolledDropdown nav inNavbar>
+                      <DropdownToggle nav caret>
+                        Satellite
+                      </DropdownToggle>
+                      <DropdownMenu right>
+                        <DropdownItem>
+                          task1
+                        </DropdownItem>
+                        <DropdownItem>
+                          task2
+                        </DropdownItem>
+                      </DropdownMenu>
+                    </UncontrolledDropdown>
                     <UncontrolledDropdown nav inNavbar>
                       <DropdownToggle nav caret>
                         ETC
                       </DropdownToggle>
                       <DropdownMenu right>
-                        <DropdownItem>
+                        {/* <DropdownItem>
                           Edit Profile
-                        </DropdownItem>
+                        </DropdownItem> */}
                         <DropdownItem>
                           Settings
                         </DropdownItem>
@@ -55,6 +68,9 @@ export default class Menubar extends Component {
                         </DropdownItem>
                       </DropdownMenu>
                     </UncontrolledDropdown>
+                    <NavItem>
+                      <Link to="/help"><NavLink>HELP</NavLink></Link>
+                    </NavItem>
                   </Nav>
                 </Collapse>
               </Navbar>

@@ -9,12 +9,14 @@ export function login(id,pwd){
     });
 }
 
-export function createUser(id,pwd,dept,pos,phone){
+export function createUser(id,pwd,userName,dept,pos,mail,phone){
     return axios.post(`${serverPath}/user/create`,{
         id:id,
         pwd:pwd,
+        userName:userName,
         dept:dept,
         pos:pos,
+        mail:mail,
         phone:phone
     });
 }
