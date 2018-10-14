@@ -14,8 +14,13 @@ import {
 import { Link }  from 'react-router-dom';
 import * as satApiService from "../services/api/satellite";
 import { SatelliteDetail } from '../page/SatelliteDetail';
+import {taskStore} from "../mobx/stores/TaskStore";
+import TaskModel from '../model/TaskModel';
+import * as satApi from "../services/api/satellite";
+import * as rtdApi from "../services/api/rtd";
+import { withRouter } from 'react-router-dom';
     
-export default class Menubar extends Component {
+class Menubar extends Component {
     
     constructor(props) {
     super(props);
@@ -44,6 +49,18 @@ export default class Menubar extends Component {
       fetching:true
     })
   }
+
+  onViewDetailBtnClicked = async (SatelliteName,SatelliteCode)=>{
+    //task 추가
+    let tmList = await satApi.getTMmetaListBySatCode(SatelliteCode);
+    let tcList = await satApi.getTCmetaListBySatCode(SatelliteCode);
+    let rtdTmTypes = await rtdApi.getTMlistBySatCode(SatelliteCode);
+    let rtdTcTypes = await rtdApi.getTClistBySatCode(SatelliteCode);
+    let newTask = new TaskModel(SatelliteCode,SatelliteName,tmList.data,tcList.data,rtdTmTypes.data,rtdTcTypes.data,'GTD');
+    taskStore.addTask(newTask);
+    taskStore.activateTask(newTask);
+    this.props.history.push(`/detail/${SatelliteName}`);
+}
     render(){
       if(this.state.fetching === false){
         return (
@@ -99,18 +116,18 @@ export default class Menubar extends Component {
                   <NavItem> 
                     <Link to="/dashboard"><NavLink>Dashboard</NavLink></Link>
                   </NavItem>
-                  <UncontrolledDropdown nav inNavbar>
+                  {/* <UncontrolledDropdown nav inNavbar>
                     <DropdownToggle nav caret>
                       Satellite
                     </DropdownToggle>
                     <DropdownMenu right>
                       {this.state.satelliteData.map((satellite,i)=>
                         <DropdownItem key={i}>
-                          <Link to={`/detail/${satellite.SatelliteName}`}>{satellite.SatelliteName}</Link>
+                          <p onClick={()=>this.onViewDetailBtnClicked(satellite.SatelliteName,satellite.SatelliteCode)}>{satellite.SatelliteName}</p>
                         </DropdownItem>
                       )}
                     </DropdownMenu>
-                  </UncontrolledDropdown>
+                  </UncontrolledDropdown> */}
                   <UncontrolledDropdown nav inNavbar>
                     <DropdownToggle nav caret>
                       ETC
@@ -139,3 +156,5 @@ export default class Menubar extends Component {
     }
   }
 }
+
+export default withRouter(Menubar);
