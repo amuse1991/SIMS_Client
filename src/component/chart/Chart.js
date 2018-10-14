@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import {Line} from 'react-chartjs-2';
-import HoverTable from './HoverTable';
+//import HoverTable from './HoverTable';
+import {TablePagination } from "react-pagination-table";
 
 const dataColor = [
     'rgba(102, 0, 102,1)',
@@ -52,9 +53,25 @@ export default class Chart extends Component{
             }
             break;
             case 'table':
+                let headers = Object.keys(items['dataset'][0])
+                var columns="";
+                for(let i=0; i<headers.length; i++){
+                    let columnName = headers[i]
+                    if(i!==headers.length){
+                        columnName = columnName + "."
+                    }
+                    columns += columnName
+                }
                 config = {
-                    data:items,
-                    distinct:true
+                    title:items['group'],
+                    headers:headers,
+                    data:items['dataset'],
+                    columns:columns,
+                    perPageItemCount:5,
+                    partialPageCount:10,
+                    totalCount:items['dataset'].length,
+                    nextPageText:"Next",
+                    prePageText:"Prev"
                 }
                 break;
             case 'text':
@@ -107,7 +124,20 @@ export default class Chart extends Component{
             case 'line':
                 return <Line data={this.state.config}/>
             case 'table':
-                return <HoverTable config={this.state.config}/>
+                let tableConfig = this.state.config
+                return <TablePagination
+                //title={tableConfig.title}
+                headers={ tableConfig.headers }
+                data={ tableConfig.data }
+                columns={tableConfig.columns}
+                //columns="name.age.size.phone.gender"
+                perPageItemCount={ tableConfig.perPageItemCount }
+                partialPageCount={ tableConfig.partialPageCount }
+                totalCount={ tableConfig.totalCount }
+                //arrayOption={ [['size', 'all', ' ']] }
+                nextPageText="Next"
+                prePageText="Prev"
+              />
             case 'text':
                 return <div>text</div>
             case 'time':

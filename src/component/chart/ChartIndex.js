@@ -33,7 +33,6 @@ export default class ChartIndex extends Component{
         }
     }
 
-    
     componentWillReceiveProps(nextProps){
         //RTD 데이터 처리를 위함
         if(nextProps.isRTD === true && this.props.chartData !== undefined){
@@ -58,25 +57,65 @@ export default class ChartIndex extends Component{
                 return typeInfo.ChartGroup === group;
             })
             //type정보의 DataName 필드를 이용해 해당하는 정보를 찾아냄
+            //TODO : 이 부분에서 타입이 테이블이면 그냥 넘어가도록 수정
             let resultDataset=[];
-            for(let j=0; j<groupDataTypes.length; j++){
-                let dataName = groupDataTypes[j]['DataName'];
-                //데이터 객체를 생성
-                let dataObj = {dataName:dataName}
-                let data = []
-                if(this.props.isRTD === true){ //RTD(single data)인 경우
-                    data.push(dataset[dataName]);
-                }else{ //archived data(batch data)인 경우
-                    data = dataset.map((item)=>{
-                        return item[dataName]
-                    });
+            // 그룹의 차트 타입이 테이블인 경우, 테이블 데이터만 JSON형식으로 모아줌
+            // react-table-pagination에서 JSON파일 자체를 데이터로 받기 때문
+            if(groupDataTypes[0]["ChartType"]=="table"){
+                let tableDataset = []
+                if(this.props.isRTD){ //RTD데이터인 경우
+                    let dataObj = {}
+                    let data = dataset
+                    //컬럼 이름 추출
+                    let coulmnNames = groupDataTypes.map((groupDataType)=>{
+                        return groupDataType['DataName']
+                    })
+                    //컬럼 이름을 기반으로 데이터를 추출
+                    coulmnNames.map((columnName)=>{
+                        dataObj[columnName] = data[columnName]
+                    })
+                    resultDataset.push(dataObj)
+                }else{
+                    //RTD데이터가 아닌 경우
+                    for(let j=0; j<dataset.length; j++){
+                        let dataObj = {}
+                        let data = dataset[j]
+                        //let columnLength = groupDataTypes.length
+                        //컬럼 이름 추출
+                        let coulmnNames = groupDataTypes.map((groupDataType)=>{
+                            return groupDataType['DataName']
+                        })
+                        //컬럼 이름을 기반으로 데이터를 추출
+                        coulmnNames.map((columnName)=>{
+                            dataObj[columnName] = data[columnName]
+                        })
+                        tableDataset.push(dataObj)
+                    }
+                    resultDataset = tableDataset;
                 }
-                dataObj.data = data;
-                resultDataset.push(dataObj);
+            }else{
+                // 그룹의 차트 타입이 테이블이 아닌 경우
+                // 이 경우 차트 표현을 위한 데이터 처리를 수행
+                for(let j=0; j<groupDataTypes.length; j++){
+                    let dataName = groupDataTypes[j]['DataName'];
+                    //데이터 객체를 생성
+                    let dataObj = {dataName:dataName}
+                    let data = []
+                    if(this.props.isRTD === true){ //RTD(single data)인 경우
+                        data.push(dataset[dataName]);
+                    }else{ //archived data(batch data)인 경우
+                        data = dataset.map((item)=>{
+                            return item[dataName]
+                        });
+                    }
+                    dataObj.data = data;
+                    resultDataset.push(dataObj);
+                }
             }
             //그룹의 type을 검색
             let type = this._getGroupChartType(group,chartTypes);
             result.push({group:group,type:type,dataset:resultDataset});
+            console.log("test")
         }
         return result;
     }
@@ -93,18 +132,6 @@ export default class ChartIndex extends Component{
             }
         })
         return chartGroup;
-        // let currentGroup;
-        // for(let i=0; i<chartTypes.length; i++){
-        //     let item = chartTypes[i];
-        //     if(item.ChartGroup === currentGroup){
-        //         continue;
-        //     }
-        //     else{
-        //         chartGroup.push(item.ChartGroup);
-        //         currentGroup = item.ChartGroup;
-        //     }
-        // }
-        // return chartGroup;
     }
 
     _getGroupChartType = (group,chartTypes)=>{

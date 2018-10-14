@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 import Chart from "./Chart";
+import RTDTable from "./RTDTable";
 
 export default class RTDChart extends Component{
     //props : chartData, chartTypes
@@ -33,8 +34,15 @@ export default class RTDChart extends Component{
                 return item.group === group.group;
             })
             //group.dataset[0].data = group.dataset[0].data.concat(selectedData.dataset[0].data);
-            for(let i=0; i<group.dataset.length; i++){
-                group.dataset[i].data = group.dataset[i].data.concat(selectedData.dataset[i].data);
+            if(selectedData.type === "table"){
+                //TODO : 페이지네이션 수정하고 아래 코드 다시 활성화할 것
+                //group.dataset.push(selectedData.dataset[0])
+                //여기서부터는 임시 코드(페이지네이션 수정하고 위 코드 다시 활성화할 것)
+                group.dataset = selectedData.dataset
+            }else{
+                for(let i=0; i<group.dataset.length; i++){
+                    group.dataset[i].data = group.dataset[i].data.concat(selectedData.dataset[i].data);
+                }
             }
         })
         await this.setState(prevState=>({
@@ -79,7 +87,9 @@ export default class RTDChart extends Component{
                         return(
                             <div>
                                 <h4>{chartItem.group}</h4>
+                                {/* TODO */}
                                 <Chart key={idx} data={chartItem} labels={this.state.labels}/>
+                                {/* <RTDTable key={idx} data={chartItem} labels={this.state.labels}/> */}
                             </div>
                         )
                     case 'line' :
